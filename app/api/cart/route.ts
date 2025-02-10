@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 
 const SHOPIFY_DOMAIN = "zugz.myshopify.com";
 const STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -20,6 +21,33 @@ interface ProductData {
 	}>;
 }
 
+interface ShopifyProduct {
+	node: {
+		id: string;
+		title: string;
+		images: {
+			edges: Array<{
+				node: {
+					url: string;
+					altText: string | null;
+				};
+			}>;
+		};
+		variants: {
+			edges: Array<{
+				node: {
+					id: string;
+					title: string;
+					price: {
+						amount: string;
+					};
+					availableForSale: boolean;
+				};
+			}>;
+		};
+	};
+}
+
 function getTierDiscount(quantity: number): { percentage: number; code: string } {
 	if (quantity >= 50) return { percentage: 40, code: "50TIER" };
 	if (quantity >= 20) return { percentage: 35, code: "20TIER" };
@@ -29,84 +57,104 @@ function getTierDiscount(quantity: number): { percentage: number; code: string }
 	return { percentage: 0, code: "" };
 }
 
-async function fetchProductData(): Promise<ProductData> {
-	const query = `
-		{
-			products(first: 20) {
-				edges {
-					node {
-						id
-						title
-						images(first: 10) {
-							edges {
-								node {
-									url
-									altText
+const fetchProductDataCached = unstable_cache(
+	async (): Promise<ProductData> => {
+		if (!STOREFRONT_ACCESS_TOKEN) {
+			throw new Error("Shopify Storefront Access Token is not configured");
+		}
+
+		const query = `
+			{
+				products(first: 20) {
+					edges {
+						node {
+							id
+							title
+							images(first: 10) {
+								edges {
+									node {
+										url
+										altText
+									}
 								}
 							}
-						}
-						variants(first: 10) {
-							edges {
-								node {
-									id
-									title
-									price {
-										amount
+							variants(first: 10) {
+								edges {
+									node {
+										id
+										title
+										price {
+											amount
+										}
+										availableForSale
 									}
-									availableForSale
 								}
 							}
 						}
 					}
 				}
 			}
+		`;
+
+		try {
+			const response = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-Shopify-Storefront-Access-Token": STOREFRONT_ACCESS_TOKEN,
+				},
+				body: JSON.stringify({ query }),
+				next: { revalidate: 60 }, // Cache for 1 minute
+			});
+
+			if (!response.ok) {
+				throw new Error(`Failed to fetch product data: ${response.statusText}`);
+			}
+
+			const { data, errors } = await response.json();
+
+			if (errors?.length > 0) {
+				throw new Error(`GraphQL Error: ${errors[0].message}`);
+			}
+
+			const products = data.products.edges as ShopifyProduct[];
+			const foundProduct = products.find((p) => p.node.title.toLowerCase() === TARGET_PRODUCT_TITLE.toLowerCase() || (p.node.title.toLowerCase().includes("grow bag") && p.node.title.toLowerCase().includes("4 lbs")));
+
+			if (!foundProduct) {
+				throw new Error("Product not found in Shopify catalog");
+			}
+
+			const availableVariant = foundProduct.node.variants.edges.find((v) => v.node.availableForSale);
+			if (!availableVariant) {
+				throw new Error("No available variants found for the product");
+			}
+
+			const images = foundProduct.node.images.edges.map((edge) => ({
+				url: edge.node.url,
+				altText: edge.node.altText || foundProduct.node.title,
+			}));
+
+			return {
+				variant: {
+					id: availableVariant.node.id,
+					price: availableVariant.node.price.amount,
+				},
+				images,
+			};
+		} catch (error) {
+			console.error("Product fetch error:", error);
+			throw error;
 		}
-	`;
-
-	const response = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"X-Shopify-Storefront-Access-Token": STOREFRONT_ACCESS_TOKEN || "",
-		},
-		body: JSON.stringify({ query }),
-	});
-
-	if (!response.ok) {
-		throw new Error("Failed to fetch product data");
+	},
+	["product-data"],
+	{
+		revalidate: 60, // Cache for 1 minute
+		tags: ["product-data"],
 	}
+);
 
-	const { data, errors } = await response.json();
-
-	if (errors?.length > 0) {
-		throw new Error(errors[0].message);
-	}
-
-	const products = data.products.edges;
-	const foundProduct = products.find((p: any) => p.node.title.toLowerCase() === TARGET_PRODUCT_TITLE.toLowerCase() || (p.node.title.toLowerCase().includes("grow bag") && p.node.title.toLowerCase().includes("4 lbs")));
-
-	if (!foundProduct) {
-		throw new Error("Product not found");
-	}
-
-	const availableVariant = foundProduct.node.variants.edges.find((v: any) => v.node.availableForSale);
-	if (!availableVariant) {
-		throw new Error("No available variants found");
-	}
-
-	const images = foundProduct.node.images.edges.map((edge: any) => ({
-		url: edge.node.url,
-		altText: edge.node.altText || foundProduct.node.title,
-	}));
-
-	return {
-		variant: {
-			id: availableVariant.node.id,
-			price: availableVariant.node.price.amount,
-		},
-		images,
-	};
-}
+// Replace the old fetchProductData with the cached version
+const fetchProductData = fetchProductDataCached;
 
 async function createCart(items: CartItem[]) {
 	const cartCreateMutation = `

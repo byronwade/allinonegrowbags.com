@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default function AllInOneGrowBags() {
-	return (
+  return (
 		<article className="min-h-screen bg-background">
 			{/* Hero Section */}
 			<div className="hero-pattern py-16">
@@ -324,5 +324,5 @@ export default function AllInOneGrowBags() {
 				</div>
 			</div>
 		</article>
-	);
+  );
 }

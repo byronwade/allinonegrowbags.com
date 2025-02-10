@@ -150,7 +150,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="canonical" href={baseUrl} />
 				<meta name="theme-color" content="#000000" />
 				<link rel="manifest" href="/manifest.json" />
-				<link rel="apple-touch-icon" href="/icon-192x192.png" />
+				<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 			</head>
 			<body className={inter.className}>
 				<CartProvider>
