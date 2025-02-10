@@ -3,16 +3,16 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 
 const bulkTiers = [
-	{ quantity: 2, discount: 5 },
-	{ quantity: 5, discount: 10 },
-	{ quantity: 10, discount: 15 },
-	{ quantity: 20, discount: 20 },
-	{ quantity: 50, discount: 30 },
+	{ quantity: 2, discount: 15 },
+	{ quantity: 5, discount: 25 },
+	{ quantity: 10, discount: 30 },
+	{ quantity: 20, discount: 35 },
+	{ quantity: 50, discount: 40 },
 ];
 
 export default function BulkOrders() {
 	return (
-		<section className="py-20 px-4 bg-background" id="bulk-orders">
+		<section className="py-12 px-4 bg-background" id="bulk-orders" aria-labelledby="bulk-orders-heading">
 			<div className="container mx-auto">
 				<h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-white">Bulk Order Discounts</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">

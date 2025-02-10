@@ -21,11 +21,11 @@ interface ProductData {
 }
 
 function getTierDiscount(quantity: number): { percentage: number; code: string } {
-	if (quantity >= 50) return { percentage: 30, code: "50TIER" };
-	if (quantity >= 20) return { percentage: 25, code: "20TIER" };
-	if (quantity >= 10) return { percentage: 20, code: "10TIER" };
-	if (quantity >= 5) return { percentage: 15, code: "5TIER" };
-	if (quantity >= 2) return { percentage: 10, code: "2TIER" };
+	if (quantity >= 50) return { percentage: 40, code: "50TIER" };
+	if (quantity >= 20) return { percentage: 35, code: "20TIER" };
+	if (quantity >= 10) return { percentage: 30, code: "10TIER" };
+	if (quantity >= 5) return { percentage: 25, code: "5TIER" };
+	if (quantity >= 2) return { percentage: 15, code: "2TIER" };
 	return { percentage: 0, code: "" };
 }
 

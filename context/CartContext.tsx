@@ -13,12 +13,12 @@ interface CartContextType {
 const basePrice = 29.99
 
 const discountTiers = [
-  { minQuantity: 50, discount: 0.3 },
-  { minQuantity: 20, discount: 0.2 },
-  { minQuantity: 10, discount: 0.15 },
-  { minQuantity: 5, discount: 0.1 },
-  { minQuantity: 2, discount: 0.05 },
-]
+	{ minQuantity: 50, discount: 0.4 }, // 40% off
+	{ minQuantity: 20, discount: 0.35 }, // 35% off
+	{ minQuantity: 10, discount: 0.3 }, // 30% off
+	{ minQuantity: 5, discount: 0.25 }, // 25% off
+	{ minQuantity: 2, discount: 0.15 }, // 15% off
+];
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 

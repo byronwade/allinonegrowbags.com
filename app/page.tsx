@@ -20,7 +20,7 @@ export default function Home() {
 			<BulkOrders />
 
 			{/* New section for All-in-One Grow Bags */}
-			<section className="py-16 px-4 bg-secondary/50">
+			<section className="py-12 px-4 bg-secondary/50">
 				<div className="container mx-auto text-center">
 					<h2 className="text-3xl font-bold mb-6 text-white">Learn More About All-in-One Grow Bags</h2>
 					<p className="text-xl text-gray-300 mb-8">Discover why ZugzBag all-in-one grow bags are the top choice for mushroom cultivators.</p>

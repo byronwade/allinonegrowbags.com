@@ -55,19 +55,19 @@ const faqs = [
 
 export default function FAQ() {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-background/50 to-background" id="faq">
-      <div className="container mx-auto max-w-4xl">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-white">Frequently Asked Questions</h2>
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="border-primary/20">
-              <AccordionTrigger className="text-lg text-white hover:text-purple">{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-gray-400">{faq.answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
-    </section>
-  )
+		<section className="py-12 px-4 bg-secondary/50" id="faq" aria-labelledby="faq-heading">
+			<div className="container mx-auto max-w-4xl">
+				<h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-white">Frequently Asked Questions</h2>
+				<Accordion type="single" collapsible className="w-full">
+					{faqs.map((faq, index) => (
+						<AccordionItem key={index} value={`item-${index}`} className="border-primary/20">
+							<AccordionTrigger className="text-lg text-white hover:text-purple">{faq.question}</AccordionTrigger>
+							<AccordionContent className="text-gray-400">{faq.answer}</AccordionContent>
+						</AccordionItem>
+					))}
+				</Accordion>
+			</div>
+		</section>
+  );
 }
 

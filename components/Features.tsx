@@ -46,7 +46,7 @@ const features = [
 
 export default function Features() {
 	return (
-		<section className="py-20 px-4 bg-background" id="features" aria-labelledby="features-heading">
+		<section className="py-12 px-4 bg-background" id="features" aria-labelledby="features-heading">
 			<div className="container mx-auto">
 				<h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-center mb-12 text-white">
 					Why Choose ZugzBag All-in-One Grow Bags?

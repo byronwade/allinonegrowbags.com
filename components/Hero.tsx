@@ -7,7 +7,7 @@ import type React from "react";
 
 export default function Hero() {
 	return (
-		<section className="hero-pattern py-12 md:py-20 px-4" aria-labelledby="hero-heading">
+		<section className="hero-pattern py-12 px-4" aria-labelledby="hero-heading">
 			<div className="container mx-auto">
 				<div className="flex flex-col md:flex-row items-center">
 					<div className="w-full md:w-1/2 mb-8 md:mb-0">
