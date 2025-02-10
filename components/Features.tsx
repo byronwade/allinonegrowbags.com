@@ -1,71 +1,57 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Beaker, Sprout, BookOpen, Recycle, Clock, Award, DollarSign, Leaf } from "lucide-react";
-
-const features = [
-	{
-		title: "Premium All-in-One Substrate",
-		description: "Pre-sterilized organic blend for optimal mushroom growth",
-		icon: Beaker,
-	},
-	{
-		title: "High-Quality Spawn",
-		description: "Carefully selected for best results in our all-in-one bags",
-		icon: Sprout,
-	},
-	{
-		title: "Expert Guidance",
-		description: "Step-by-step instructions for foolproof mushroom growing",
-		icon: BookOpen,
-	},
-	{
-		title: "Eco-Friendly",
-		description: "Sustainable all-in-one grow bags with recyclable materials",
-		icon: Leaf,
-	},
-	{
-		title: "Quick Results",
-		description: "Harvest mushrooms in as little as 2-3 weeks",
-		icon: Clock,
-	},
-	{
-		title: "Gourmet Quality",
-		description: "Grow restaurant-grade mushrooms at home with our all-in-one bags",
-		icon: Award,
-	},
-	{
-		title: "Bulk Discounts",
-		description: "Save more when you order multiple all-in-one grow bags",
-		icon: DollarSign,
-	},
-	{
-		title: "Guaranteed Growth",
-		description: "Free replacement if your mushrooms don't grow in our all-in-one bags",
-		icon: Recycle,
-	},
-];
+import { Microscope, Scale, Filter, Truck, HeartHandshake, Percent } from "lucide-react";
 
 export default function Features() {
 	return (
-		<section className="py-12 px-4 bg-background" id="features" aria-labelledby="features-heading">
-			<div className="container mx-auto">
-				<h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-center mb-12 text-white">
-					Why Choose ZugzBag All-in-One Grow Bags?
+		<section className="container mx-auto py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8" aria-labelledby="features-heading">
+			<div className="text-center mb-8 md:mb-12">
+				<h2 id="features-heading" className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 text-white">
+					Why Choose ZugzBag?
 				</h2>
-				<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-					{features.map((feature, index) => (
-						<li key={index}>
-							<Card className="bg-secondary/50 backdrop-blur-sm border-purple/20 hover:border-purple/40 transition-colors card-hover">
-								<CardHeader>
-									<feature.icon className="w-12 h-12 text-purple mb-4" aria-hidden="true" />
-									<CardTitle className="text-xl text-white">{feature.title}</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className="text-gray-400">{feature.description}</p>
-								</CardContent>
-							</Card>
-						</li>
-					))}
-				</ul>
+				<p className="text-base sm:text-lg text-gray-300">Premium quality, consistent results, and exceptional customer service.</p>
+			</div>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<Microscope className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Lab-Grade Sterility</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">Our bags are sterilized in an autoclave under precise conditions to ensure complete sterility and optimal growing conditions.</p>
+				</div>
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<Scale className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Perfect Ratio</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">Each bag contains the ideal ratio of grain to substrate, scientifically formulated for maximum yields.</p>
+				</div>
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<Filter className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Filter Patch</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">High-quality filter patches allow optimal gas exchange while maintaining sterility throughout the growing process.</p>
+				</div>
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<Truck className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Fast Shipping</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">Orders ship within 1-2 business days. Bulk orders may require additional processing time.</p>
+				</div>
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<HeartHandshake className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Expert Support</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">Our team of experienced growers is here to help you succeed with your cultivation projects.</p>
+				</div>
+				<div className="bg-secondary/50 backdrop-blur-sm border border-purple/20 p-4 md:p-6 rounded-lg">
+					<div className="flex items-center mb-3 md:mb-4">
+						<Percent className="w-6 h-6 md:w-8 md:h-8 text-purple" />
+						<h3 className="text-lg md:text-xl font-semibold ml-3 text-white">Bulk Savings</h3>
+					</div>
+					<p className="text-sm md:text-base text-gray-300">Save up to 30% on bulk orders. Perfect for commercial growers and serious hobbyists.</p>
+				</div>
 			</div>
 		</section>
 	);

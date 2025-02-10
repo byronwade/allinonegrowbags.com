@@ -11,7 +11,7 @@ import MadeInUSA from "@/components/MadeInUSA";
 
 export default function Home() {
 	return (
-		<main className="min-h-screen bg-background">
+		<div className="min-h-screen bg-background">
 			<Hero />
 			<ReferralStrip />
 			<Features />
@@ -20,10 +20,10 @@ export default function Home() {
 			<BulkOrders />
 
 			{/* New section for All-in-One Grow Bags */}
-			<section className="py-12 px-4 bg-secondary/50">
-				<div className="container mx-auto text-center">
-					<h2 className="text-3xl font-bold mb-6 text-white">Learn More About All-in-One Grow Bags</h2>
-					<p className="text-xl text-gray-300 mb-8">Discover why ZugzBag all-in-one grow bags are the top choice for mushroom cultivators.</p>
+			<section className="container mx-auto py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 bg-secondary/50">
+				<div className="text-center">
+					<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 text-white">Learn More About All-in-One Grow Bags</h2>
+					<p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8">Discover why ZugzBag all-in-one grow bags are the top choice for mushroom cultivators.</p>
 					<Link href="/all-in-one-grow-bags">
 						<Button className="bg-purple hover:bg-purple-dark text-white">Explore All-in-One Grow Bags</Button>
 					</Link>
@@ -32,6 +32,6 @@ export default function Home() {
 
 			<FAQ />
 			<CTA />
-		</main>
+		</div>
 	);
 }
