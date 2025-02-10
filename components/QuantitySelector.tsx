@@ -11,7 +11,7 @@ interface QuantitySelectorProps {
 	max?: number;
 }
 
-export default function QuantitySelector({ min = 1, max = 100 }: QuantitySelectorProps) {
+export default function QuantitySelector({ min = 1, max = 1000 }: QuantitySelectorProps) {
 	const { quantity, setQuantity } = useCart();
 
 	const updateQuantity = (newQuantity: number) => {
@@ -27,11 +27,11 @@ export default function QuantitySelector({ min = 1, max = 100 }: QuantitySelecto
 	return (
 		<div className="flex items-center space-x-2">
 			<Button variant="outline" size="icon" onClick={() => updateQuantity(quantity - 1)} disabled={quantity <= min}>
-				<Minus className="h-4 w-4" />
+				<Minus className="w-4 h-4" />
 			</Button>
 			<Input type="number" min={min} max={max} value={quantity} onChange={handleInputChange} className="w-20 text-center" suppressHydrationWarning />
 			<Button variant="outline" size="icon" onClick={() => updateQuantity(quantity + 1)} disabled={quantity >= max}>
-				<Plus className="h-4 w-4" />
+				<Plus className="w-4 h-4" />
 			</Button>
 		</div>
 	);
