@@ -140,7 +140,7 @@ export default function Header() {
 						<div className="flex items-center space-x-4">
 							<div className="flex items-center space-x-2">
 								<span className="text-sm text-gray-300">Quantity:</span>
-								<QuantitySelector min={1} max={100} />
+								<QuantitySelector min={1} max={1000} />
 							</div>
 							<div className="flex items-center space-x-2">
 								<div className="text-right">
@@ -174,7 +174,7 @@ export default function Header() {
 						))}
 						<div className="flex items-center justify-between">
 							<span className="text-sm text-gray-300">Quantity:</span>
-							<QuantitySelector min={1} max={100} />
+							<QuantitySelector min={1} max={1000} />
 						</div>
 						<div className="flex items-center justify-between">
 							<div className="text-left">

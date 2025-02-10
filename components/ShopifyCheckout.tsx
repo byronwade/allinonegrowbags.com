@@ -85,7 +85,7 @@ export default function ShopifyCheckout() {
 		<div className="space-y-4" suppressHydrationWarning>
 			<div className="flex items-center justify-between">
 				<span className="text-lg font-medium text-white">Quantity:</span>
-				<QuantitySelector min={1} max={100} />
+				<QuantitySelector min={1} max={1000} />
 			</div>
 			<div className="space-y-2">
 				<div className="flex justify-between items-center">
