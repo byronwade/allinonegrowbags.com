@@ -1,4 +1,9 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
+
+interface ReviewData {
+	status?: string;
+	modifiedAt?: string;
+}
 
 export const Reviews: CollectionConfig = {
 	slug: "reviews",
@@ -104,7 +109,7 @@ export const Reviews: CollectionConfig = {
 			({ data }) => {
 				return {
 					...data,
-					modifiedAt: new Date(),
+					modifiedAt: new Date().toISOString(),
 				};
 			},
 		],

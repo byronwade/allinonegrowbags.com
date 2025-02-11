@@ -9,7 +9,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
-const BASE_PRICE = 29.99;
 const VARIANT_ID = "7264768655420";
 
 interface NavLink {
@@ -27,7 +26,7 @@ const navLinks: NavLink[] = [
 ];
 
 export default function Header() {
-	const { quantity, getCurrentPrice, getDiscount } = useCart();
+	const { quantity, getCurrentPrice, getDiscount, basePrice } = useCart();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
@@ -79,7 +78,7 @@ export default function Header() {
 			const price = getCurrentPrice(quantity);
 			const finalPrice = price * quantity;
 			const discount = getDiscount(quantity);
-			const totalSavings = discount > 0 ? (BASE_PRICE * quantity - finalPrice).toFixed(2) : "0";
+			const totalSavings = discount > 0 ? (basePrice * quantity - finalPrice).toFixed(2) : "0";
 
 			const response = await fetch("/api/cart", {
 				method: "POST",
@@ -94,7 +93,7 @@ export default function Header() {
 							quantity: quantity,
 							properties: {
 								_bulk_discount: discount > 0 ? `${(discount * 100).toFixed(0)}%` : "None",
-								_original_price: BASE_PRICE.toFixed(2),
+								_original_price: basePrice.toFixed(2),
 								_discounted_price: price.toFixed(2),
 								_total_savings: totalSavings,
 							},
@@ -157,7 +156,9 @@ export default function Header() {
 
 					<div className="md:hidden">
 						<Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-							{mobileMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
+							{mobileMenuOpen ?
+								<X className="h-6 w-6 text-white" />
+							:	<Menu className="h-6 w-6 text-white" />}
 						</Button>
 					</div>
 				</div>

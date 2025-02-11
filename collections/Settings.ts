@@ -1,4 +1,4 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
 
 export const Settings: CollectionConfig = {
 	slug: "settings",
@@ -14,33 +14,6 @@ export const Settings: CollectionConfig = {
 			name: "siteName",
 			type: "text",
 			required: true,
-		},
-		{
-			name: "seo",
-			type: "group",
-			fields: [
-				{
-					name: "defaultMeta",
-					type: "group",
-					fields: [
-						{
-							name: "title",
-							type: "text",
-							required: true,
-						},
-						{
-							name: "description",
-							type: "textarea",
-							required: true,
-						},
-						{
-							name: "ogImage",
-							type: "upload",
-							relationTo: "media",
-						},
-					],
-				},
-			],
 		},
 		{
 			name: "header",
@@ -80,10 +53,10 @@ export const Settings: CollectionConfig = {
 							required: true,
 							options: [
 								{ label: "Facebook", value: "facebook" },
-								{ label: "Twitter", value: "twitter" },
 								{ label: "Instagram", value: "instagram" },
-								{ label: "LinkedIn", value: "linkedin" },
 								{ label: "YouTube", value: "youtube" },
+								{ label: "TikTok", value: "tiktok" },
+								{ label: "Pinterest", value: "pinterest" },
 							],
 						},
 						{

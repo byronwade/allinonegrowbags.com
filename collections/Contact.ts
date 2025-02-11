@@ -1,4 +1,4 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
 
 export const Contact: CollectionConfig = {
 	slug: "contact",
@@ -35,16 +35,16 @@ export const Contact: CollectionConfig = {
 					value: "general",
 				},
 				{
-					label: "Service Request",
-					value: "service",
+					label: "Bulk Order",
+					value: "bulk",
 				},
 				{
-					label: "Boat Purchase",
-					value: "purchase",
+					label: "Growing Support",
+					value: "support",
 				},
 				{
-					label: "Boat Sale",
-					value: "sale",
+					label: "Wholesale",
+					value: "wholesale",
 				},
 				{
 					label: "Other",
@@ -56,24 +56,6 @@ export const Contact: CollectionConfig = {
 			name: "message",
 			type: "textarea",
 			required: true,
-		},
-		{
-			name: "relatedBoat",
-			type: "relationship",
-			relationTo: "boats",
-			hasMany: false,
-			admin: {
-				description: "Select a boat if this inquiry is about a specific listing",
-			},
-		},
-		{
-			name: "relatedService",
-			type: "relationship",
-			relationTo: "services",
-			hasMany: false,
-			admin: {
-				description: "Select a service if this inquiry is about a specific service",
-			},
 		},
 		{
 			name: "status",

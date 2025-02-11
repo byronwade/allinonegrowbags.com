@@ -128,37 +128,6 @@ export const Guides: CollectionConfig = {
 				],
 			},
 		},
-		{
-			name: "seo",
-			type: "group",
-			fields: [
-				{
-					name: "title",
-					type: "text",
-					admin: {
-						description: "Defaults to the guide title if left blank",
-					},
-				},
-				{
-					name: "description",
-					type: "textarea",
-					admin: {
-						description: "Defaults to the guide excerpt if left blank",
-					},
-				},
-				{
-					name: "ogImage",
-					type: "upload",
-					relationTo: "media",
-					admin: {
-						description: "Defaults to the featured image if left blank",
-					},
-				},
-			],
-			admin: {
-				position: "sidebar",
-			},
-		},
 	],
 	versions: {
 		drafts: true,

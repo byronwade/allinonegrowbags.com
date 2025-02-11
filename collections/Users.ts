@@ -1,14 +1,29 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
 	slug: "users",
-	auth: true,
+	auth: {
+		useAPIKey: true,
+		depth: 2,
+	},
 	admin: {
 		useAsTitle: "email",
 		group: "Admin",
 	},
 	access: {
 		read: () => true,
+		create: () => true,
+		update: ({ req: { user } }) => {
+			if (user?.roles?.includes("admin")) return true;
+			return {
+				id: {
+					equals: user?.id,
+				},
+			};
+		},
+		delete: ({ req: { user } }) => {
+			return user?.roles?.includes("admin");
+		},
 	},
 	fields: [
 		{
@@ -32,8 +47,9 @@ export const Users: CollectionConfig = {
 				},
 			],
 			access: {
-				create: () => true,
-				update: () => true,
+				read: ({ req: { user } }) => Boolean(user?.roles?.includes("admin")),
+				create: ({ req: { user } }) => Boolean(user?.roles?.includes("admin")),
+				update: ({ req: { user } }) => Boolean(user?.roles?.includes("admin")),
 			},
 		},
 	],

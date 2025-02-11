@@ -79,6 +79,9 @@ export interface User {
   roles?: ('admin' | 'editor')[] | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -141,20 +144,20 @@ export interface Media {
 export interface Page {
   id: number;
   title: string;
-  content?:
+  /**
+   * Is this the home page?
+   */
+  isHomePage?: boolean | null;
+  parent?: (number | null) | Page;
+  slug: string;
+  status: 'draft' | 'published';
+  /**
+   * Date this page was published
+   */
+  publishedAt?: string | null;
+  blocks?:
     | (
-        | {
-            heading: string;
-            subheading?: string | null;
-            image: number | Media;
-            ctaButton?: {
-              label?: string | null;
-              link?: string | null;
-            };
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'hero';
-          }
+        | HeroBlock
         | {
             content: {
               root: {
@@ -176,12 +179,13 @@ export interface Page {
             blockType: 'content';
           }
         | {
-            heading?: string | null;
+            heading: string;
+            subheading: string;
             features?:
               | {
                   title: string;
-                  description?: string | null;
-                  icon?: string | null;
+                  description: string;
+                  icon: 'microscope' | 'scale' | 'filter' | 'truck' | 'heartHandshake' | 'percent';
                   id?: string | null;
                 }[]
               | null;
@@ -191,37 +195,86 @@ export interface Page {
           }
         | {
             heading: string;
-            content?: string | null;
-            buttons?:
-              | {
-                  label: string;
-                  link: string;
-                  variant?: ('primary' | 'secondary') | null;
-                  id?: string | null;
-                }[]
-              | null;
-            backgroundImage?: (number | null) | Media;
+            description: string;
+            primaryButtonText: string;
+            primaryButtonLink: string;
+            secondaryButtonText?: string | null;
+            secondaryButtonLink?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'cta';
           }
+        | {
+            text: string;
+            link: {
+              text: string;
+              url: string;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'referralStrip';
+          }
+        | {
+            heading: string;
+            steps: {
+              title: string;
+              description: string;
+              id?: string | null;
+            }[];
+            image: {
+              url: string;
+              alt: string;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'howItWorks';
+          }
+        | {
+            heading: string;
+            description: string;
+            benefits: {
+              text: string;
+              id?: string | null;
+            }[];
+            image: {
+              url: string;
+              alt: string;
+            };
+            flagImage: {
+              url: string;
+              alt: string;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'madeInUSA';
+          }
+        | {
+            heading: string;
+            description: string;
+            tiers: {
+              quantity: number;
+              discount: number;
+              id?: string | null;
+            }[];
+            footerText: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'bulkOrders';
+          }
+        | {
+            heading: string;
+            description: string;
+            faqs: {
+              question: string;
+              answer: string;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faq';
+          }
       )[]
     | null;
-  slug: string;
-  /**
-   * If this is a sub-page, select its parent
-   */
-  parent?: (number | null) | Page;
-  status: 'draft' | 'published';
-  seo?: {
-    /**
-     * Defaults to the page title if left blank
-     */
-    title?: string | null;
-    description?: string | null;
-    ogImage?: (number | null) | Media;
-    noIndex?: boolean | null;
-  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -236,35 +289,58 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  heading: string;
+  description: string;
+  mushroomTypes?:
+    | {
+        type: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  specs?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
   id: number;
   title: string;
-  content?:
-    | {
-        content: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
+  content: {
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
           [k: string]: unknown;
-        };
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'content';
-      }[]
-    | null;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+    blockName?: string | null;
+    blockType: 'content';
+  }[];
   excerpt: string;
-  category: 'growing-tips' | 'product-reviews' | 'news' | 'tutorials';
+  category: 'growing-guides' | 'mushroom-species' | 'equipment-reviews' | 'success-stories' | 'industry-news';
   /**
    * This image will be used as the cover image for the post
    */
@@ -275,20 +351,6 @@ export interface Post {
    */
   publishedAt?: string | null;
   slug?: string | null;
-  seo?: {
-    /**
-     * Defaults to the post title if left blank
-     */
-    title?: string | null;
-    /**
-     * Defaults to the post excerpt if left blank
-     */
-    description?: string | null;
-    /**
-     * Defaults to the featured image if left blank
-     */
-    ogImage?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -332,20 +394,6 @@ export interface Guide {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   slug?: string | null;
-  seo?: {
-    /**
-     * Defaults to the guide title if left blank
-     */
-    title?: string | null;
-    /**
-     * Defaults to the guide excerpt if left blank
-     */
-    description?: string | null;
-    /**
-     * Defaults to the featured image if left blank
-     */
-    ogImage?: (number | null) | Media;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -391,13 +439,6 @@ export interface Review {
 export interface Setting {
   id: number;
   siteName: string;
-  seo: {
-    defaultMeta: {
-      title: string;
-      description: string;
-      ogImage?: (number | null) | Media;
-    };
-  };
   header: {
     logo: number | Media;
     navigation?: (number | null) | Navigation;
@@ -406,7 +447,7 @@ export interface Setting {
     navigation?: (number | null) | Navigation;
     socialLinks?:
       | {
-          platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube';
+          platform: 'facebook' | 'instagram' | 'youtube' | 'tiktok' | 'pinterest';
           url: string;
           id?: string | null;
         }[]
@@ -541,6 +582,9 @@ export interface UsersSelect<T extends boolean = true> {
   roles?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -608,24 +652,15 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
-  content?:
+  isHomePage?: T;
+  parent?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  blocks?:
     | T
     | {
-        hero?:
-          | T
-          | {
-              heading?: T;
-              subheading?: T;
-              image?: T;
-              ctaButton?:
-                | T
-                | {
-                    label?: T;
-                    link?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
+        hero?: T | HeroBlockSelect<T>;
         content?:
           | T
           | {
@@ -637,6 +672,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
+              subheading?: T;
               features?:
                 | T
                 | {
@@ -652,30 +688,104 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
-              content?: T;
-              buttons?:
-                | T
-                | {
-                    label?: T;
-                    link?: T;
-                    variant?: T;
-                    id?: T;
-                  };
-              backgroundImage?: T;
+              description?: T;
+              primaryButtonText?: T;
+              primaryButtonLink?: T;
+              secondaryButtonText?: T;
+              secondaryButtonLink?: T;
               id?: T;
               blockName?: T;
             };
-      };
-  slug?: T;
-  parent?: T;
-  status?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        ogImage?: T;
-        noIndex?: T;
+        referralStrip?:
+          | T
+          | {
+              text?: T;
+              link?:
+                | T
+                | {
+                    text?: T;
+                    url?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        howItWorks?:
+          | T
+          | {
+              heading?: T;
+              steps?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              image?:
+                | T
+                | {
+                    url?: T;
+                    alt?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        madeInUSA?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              benefits?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              image?:
+                | T
+                | {
+                    url?: T;
+                    alt?: T;
+                  };
+              flagImage?:
+                | T
+                | {
+                    url?: T;
+                    alt?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        bulkOrders?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              tiers?:
+                | T
+                | {
+                    quantity?: T;
+                    discount?: T;
+                    id?: T;
+                  };
+              footerText?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              faqs?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -687,6 +797,30 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  mushroomTypes?:
+    | T
+    | {
+        type?: T;
+        id?: T;
+      };
+  image?: T;
+  specs?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -711,13 +845,6 @@ export interface PostsSelect<T extends boolean = true> {
   status?: T;
   publishedAt?: T;
   slug?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        ogImage?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -751,13 +878,6 @@ export interface GuidesSelect<T extends boolean = true> {
   status?: T;
   publishedAt?: T;
   slug?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        ogImage?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -786,17 +906,6 @@ export interface ReviewsSelect<T extends boolean = true> {
  */
 export interface SettingsSelect<T extends boolean = true> {
   siteName?: T;
-  seo?:
-    | T
-    | {
-        defaultMeta?:
-          | T
-          | {
-              title?: T;
-              description?: T;
-              ogImage?: T;
-            };
-      };
   header?:
     | T
     | {

@@ -1,5 +1,11 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
+import type { Block } from "payload/types";
 import { contentBlock } from "../blocks";
+
+interface PostData {
+	title?: string;
+	status?: string;
+}
 
 export const Posts: CollectionConfig = {
 	slug: "posts",
@@ -20,7 +26,8 @@ export const Posts: CollectionConfig = {
 		{
 			name: "content",
 			type: "blocks",
-			blocks: [contentBlock],
+			required: true,
+			blocks: [contentBlock] as Block[],
 		},
 		{
 			name: "excerpt",
@@ -32,10 +39,11 @@ export const Posts: CollectionConfig = {
 			type: "select",
 			required: true,
 			options: [
-				{ label: "Growing Tips", value: "growing-tips" },
-				{ label: "Product Reviews", value: "product-reviews" },
-				{ label: "News", value: "news" },
-				{ label: "Tutorials", value: "tutorials" },
+				{ label: "Growing Guides", value: "growing-guides" },
+				{ label: "Mushroom Species", value: "mushroom-species" },
+				{ label: "Equipment Reviews", value: "equipment-reviews" },
+				{ label: "Success Stories", value: "success-stories" },
+				{ label: "Industry News", value: "industry-news" },
 			],
 			admin: {
 				position: "sidebar",
@@ -79,8 +87,8 @@ export const Posts: CollectionConfig = {
 			hooks: {
 				beforeChange: [
 					({ siblingData }) => {
-						if (siblingData.status === "published") {
-							return new Date();
+						if ((siblingData as PostData).status === "published") {
+							return new Date().toISOString();
 						}
 						return undefined;
 					},
@@ -97,46 +105,15 @@ export const Posts: CollectionConfig = {
 			hooks: {
 				beforeValidate: [
 					({ value, data }) => {
-						if (!value && data?.title) {
-							return data.title
-								.toLowerCase()
+						if (!value && (data as PostData)?.title) {
+							return (data as PostData).title
+								?.toLowerCase()
 								.replace(/[^a-z0-9]/g, "-")
 								.replace(/-+/g, "-");
 						}
 						return value;
 					},
 				],
-			},
-		},
-		{
-			name: "seo",
-			type: "group",
-			fields: [
-				{
-					name: "title",
-					type: "text",
-					admin: {
-						description: "Defaults to the post title if left blank",
-					},
-				},
-				{
-					name: "description",
-					type: "textarea",
-					admin: {
-						description: "Defaults to the post excerpt if left blank",
-					},
-				},
-				{
-					name: "ogImage",
-					type: "upload",
-					relationTo: "media",
-					admin: {
-						description: "Defaults to the featured image if left blank",
-					},
-				},
-			],
-			admin: {
-				position: "sidebar",
 			},
 		},
 	],
