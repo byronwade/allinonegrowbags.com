@@ -1,4 +1,5 @@
 import type { Block } from "@/types/payload";
+import { defaultFAQContent } from "./defaults";
 
 export const FAQBlock: Block = {
 	slug: "faq",
@@ -12,18 +13,21 @@ export const FAQBlock: Block = {
 			type: "text",
 			required: true,
 			label: "Heading",
+			defaultValue: defaultFAQContent.heading,
 		},
 		{
 			name: "description",
 			type: "textarea",
 			required: true,
 			label: "Description",
+			defaultValue: defaultFAQContent.description,
 		},
 		{
 			name: "faqs",
 			type: "array",
 			required: true,
 			minRows: 1,
+			defaultValue: defaultFAQContent.faqs,
 			labels: {
 				singular: "FAQ Item",
 				plural: "FAQ Items",
@@ -44,4 +48,4 @@ export const FAQBlock: Block = {
 			],
 		},
 	],
-};
+} as const;

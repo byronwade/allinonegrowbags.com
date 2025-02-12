@@ -21,7 +21,7 @@ interface BulkOrdersProps {
 
 const PRODUCT_TITLE = "Sterile All-in-One Mushroom Grow Bag – 4 lbs Substrate & Grain with Filter Patch";
 
-export const BulkOrders: React.FC<BulkOrdersProps> = ({ heading, description, tiers, footerText }) => {
+export const BulkOrders = ({ heading, description, tiers, footerText }: BulkOrdersProps) => {
 	const [loadingTier, setLoadingTier] = useState<number | null>(null);
 	const { basePrice } = useCart();
 
@@ -86,23 +86,24 @@ export const BulkOrders: React.FC<BulkOrdersProps> = ({ heading, description, ti
 			<p className="text-base sm:text-lg text-gray-300 text-center mb-8 md:mb-12">{description}</p>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6">
 				{tiers.map((tier) => (
-					<Card key={tier.quantity} className="bg-secondary/50 backdrop-blur-sm border-purple/20 hover:border-purple/40 transition-colors card-hover">
+					<Card key={`tier-${tier.quantity}`} className="bg-secondary/50 backdrop-blur-sm border-purple/20 hover:border-purple/40 transition-colors card-hover">
 						<CardHeader>
 							<CardTitle className="text-xl md:text-2xl text-white text-center">{tier.quantity}+ Bags</CardTitle>
 						</CardHeader>
 						<CardContent className="text-center">
 							<p className="text-2xl md:text-3xl font-bold text-purple mb-4">{tier.discount}% OFF</p>
-							<Button className="bg-purple hover:bg-purple-dark text-white text-sm md:text-base w-full" onClick={() => handleBuyNow(tier.quantity, tier.discount)} disabled={loadingTier !== null}>
-								{loadingTier === tier.quantity ?
+							<Button className="bg-purple hover:bg-purple-dark text-white text-sm md:text-base w-full" onClick={() => handleBuyNow(tier.quantity, tier.discount)} disabled={loadingTier !== null} suppressHydrationWarning>
+								{loadingTier === tier.quantity ? (
 									<>
 										<Loader2 className="w-4 h-4 mr-2 animate-spin" />
 										Processing...
 									</>
-								:	<>
+								) : (
+									<>
 										<ShoppingCart className="w-4 h-4 mr-2" />
 										Buy Now
 									</>
-								}
+								)}
 							</Button>
 						</CardContent>
 					</Card>

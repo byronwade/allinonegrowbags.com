@@ -1,4 +1,5 @@
 import type { Block } from "@/types/payload";
+import { defaultHowItWorksContent } from "./defaults";
 
 export const HowItWorksBlock: Block = {
 	slug: "howItWorks",
@@ -12,13 +13,15 @@ export const HowItWorksBlock: Block = {
 			type: "text",
 			required: true,
 			label: "Heading",
+			defaultValue: defaultHowItWorksContent.heading,
 		},
 		{
 			name: "steps",
 			type: "array",
-			required: true,
+			label: "Steps",
 			minRows: 1,
 			maxRows: 5,
+			defaultValue: defaultHowItWorksContent.steps,
 			labels: {
 				singular: "Step",
 				plural: "Steps",
@@ -41,21 +44,23 @@ export const HowItWorksBlock: Block = {
 		{
 			name: "image",
 			type: "group",
-			required: true,
+			label: "Image",
 			fields: [
 				{
 					name: "url",
 					type: "text",
 					required: true,
 					label: "Image URL",
+					defaultValue: defaultHowItWorksContent.image.url,
 				},
 				{
 					name: "alt",
 					type: "text",
 					required: true,
 					label: "Image Alt Text",
+					defaultValue: defaultHowItWorksContent.image.alt,
 				},
 			],
 		},
 	],
-};
+} as const;

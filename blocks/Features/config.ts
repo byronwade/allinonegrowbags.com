@@ -1,4 +1,5 @@
 import type { Block } from "@/types/payload";
+import { defaultFeaturesContent } from "./defaults";
 
 export const FeaturesBlock: Block = {
 	slug: "features",
@@ -12,12 +13,14 @@ export const FeaturesBlock: Block = {
 			type: "text",
 			required: true,
 			label: "Heading",
+			defaultValue: defaultFeaturesContent.heading,
 		},
 		{
 			name: "subheading",
 			type: "text",
 			required: true,
 			label: "Subheading",
+			defaultValue: defaultFeaturesContent.subheading,
 		},
 		{
 			name: "features",
@@ -25,6 +28,7 @@ export const FeaturesBlock: Block = {
 			label: "Features",
 			minRows: 3,
 			maxRows: 6,
+			defaultValue: defaultFeaturesContent.features,
 			labels: {
 				singular: "Feature",
 				plural: "Features",

@@ -6,7 +6,8 @@ export { HowItWorks } from "./HowItWorks/HowItWorks";
 export { MadeInUSA } from "./MadeInUSA/MadeInUSA";
 export { BulkOrders } from "./BulkOrders/BulkOrders";
 export { FAQ } from "./FAQ/FAQ";
-export { CTA } from "./CTA/CTA";
+import CTA from "./CTA/CTA";
+export { CTA };
 
 // Block Configs
 import { HeroBlock } from "./Hero/config";
@@ -73,7 +74,7 @@ export const blocks = {
 	referralStrip: referralStripBlock,
 	howItWorks: howItWorksBlock,
 	madeInUSA: madeInUSABlock,
-	bullOrders: bulkOrdersBlock,
+	bulkOrders: bulkOrdersBlock,
 	faq: faqBlock,
 	cta: ctaBlock,
 	content: contentBlock,

@@ -3,7 +3,8 @@ import { setupHomePage } from "../../_actions/update-home";
 import { getPageBySlug } from "../../_actions/pages";
 import { getPostBySlug } from "../../_actions/posts";
 import { getGuideBySlug } from "../../_actions/guides";
-import { BlockRenderer, Block } from "@/components/BlockRenderer";
+import BlockRenderer from "@/components/BlockRenderer";
+import type { Block } from "@/components/BlockRenderer";
 import UpdateButton from "./update-button";
 
 interface PageParams {

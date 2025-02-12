@@ -2,6 +2,7 @@ import { CollectionConfig } from "payload";
 import { heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock, contactBlock } from "../blocks";
 
 interface PageData {
+	title?: string;
 	isHomePage?: boolean;
 	slug?: string;
 	parent?: string;
@@ -14,9 +15,18 @@ export const Pages: CollectionConfig = {
 		useAsTitle: "title",
 		group: "Content",
 		defaultColumns: ["title", "slug", "status", "updatedAt"],
+		preview: (doc) => {
+			if (doc?.slug) {
+				return `${process.env.NEXT_PUBLIC_SERVER_URL}/${doc.slug}`;
+			}
+			return `${process.env.NEXT_PUBLIC_SERVER_URL}`;
+		},
 	},
 	access: {
 		read: () => true,
+		create: () => true,
+		update: () => true,
+		delete: () => true,
 	},
 	fields: [
 		{
@@ -53,11 +63,11 @@ export const Pages: CollectionConfig = {
 			hooks: {
 				beforeValidate: [
 					({ value, data }) => {
-						if (!value && data?.title) {
-							return data.title
-								.toLowerCase()
-								.replace(/ /g, "-")
-								.replace(/[^\w-]+/g, "");
+						if (!value && (data as PageData)?.title) {
+							return (data as PageData).title
+								?.toLowerCase()
+								.replace(/[^a-z0-9]/g, "-")
+								.replace(/-+/g, "-");
 						}
 						return value;
 					},
@@ -134,4 +144,4 @@ export const Pages: CollectionConfig = {
 	versions: {
 		drafts: true,
 	},
-};
+} as const;

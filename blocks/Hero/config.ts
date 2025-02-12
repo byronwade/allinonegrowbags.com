@@ -3,8 +3,6 @@ import { defaultHeroContent } from "./defaults";
 
 export const HeroBlock: Block = {
 	slug: "hero",
-	imageURL: "/path/to/icon.svg",
-	imageAltText: "Hero Block",
 	interfaceName: "HeroBlock",
 	fields: [
 		{

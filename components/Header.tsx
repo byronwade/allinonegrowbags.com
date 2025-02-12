@@ -8,22 +8,9 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { siteNavigation } from "@/lib/navigation";
 
 const VARIANT_ID = "7264768655420";
-
-interface NavLink {
-	label: string;
-	href: string;
-	isScroll?: boolean;
-}
-
-const navLinks: NavLink[] = [
-	{ label: "Features", href: "/#features", isScroll: true },
-	{ label: "How It Works", href: "/all-in-one-grow-bags" },
-	{ label: "Bulk Orders", href: "/#bulk-orders", isScroll: true },
-	{ label: "FAQ", href: "/#faq", isScroll: true },
-	{ label: "Contact", href: "/contact" },
-];
 
 export default function Header() {
 	const { quantity, getCurrentPrice, getDiscount, basePrice } = useCart();
@@ -45,11 +32,11 @@ export default function Header() {
 		}
 	}, [pathname]);
 
-	const handleNavClick = async (e: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
+	const handleNavClick = async (e: React.MouseEvent<HTMLAnchorElement>, href: `/${string}` | `/#${string}` | "/") => {
 		e.preventDefault();
 		setMobileMenuOpen(false);
 
-		const [path, hash] = link.href.split("#");
+		const [path, hash] = href.split("#");
 		const isCurrentPage = path === "/" ? pathname === "/" : pathname === path;
 
 		if (isCurrentPage && hash) {
@@ -60,7 +47,7 @@ export default function Header() {
 			}
 		} else {
 			// Different page navigation
-			await router.push(link.href);
+			await router.push(href);
 			if (hash) {
 				setTimeout(() => {
 					const element = document.getElementById(hash);
@@ -130,13 +117,13 @@ export default function Header() {
 
 					<div className="hidden md:flex items-center justify-between flex-grow ml-4">
 						<nav className="flex items-center space-x-6">
-							{navLinks.map((link) => (
-								<Link key={link.href} href={link.href} className="text-sm text-gray-300 hover:text-purple transition-colors" onClick={(e) => handleNavClick(e, link)}>
+							{siteNavigation.header.map((link) => (
+								<Link key={link.href} href={link.href} className="text-sm text-gray-300 hover:text-purple transition-colors" onClick={(e) => handleNavClick(e, link.href)}>
 									{link.label}
 								</Link>
 							))}
 						</nav>
-						<div className="flex items-center space-x-4">
+						<div className="flex items-center space-x-4" suppressHydrationWarning>
 							<div className="flex items-center space-x-2">
 								<span className="text-sm text-gray-300">Quantity:</span>
 								<QuantitySelector min={1} max={1000} />
@@ -156,9 +143,7 @@ export default function Header() {
 
 					<div className="md:hidden">
 						<Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-							{mobileMenuOpen ?
-								<X className="h-6 w-6 text-white" />
-							:	<Menu className="h-6 w-6 text-white" />}
+							{mobileMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
 						</Button>
 					</div>
 				</div>
@@ -167,9 +152,9 @@ export default function Header() {
 			{/* Mobile menu */}
 			{mobileMenuOpen && (
 				<div className="md:hidden bg-background border-t border-border">
-					<div className="container mx-auto px-4 py-4 space-y-4">
-						{navLinks.map((link) => (
-							<Link key={link.href} href={link.href} className="block text-sm text-gray-300 hover:text-purple transition-colors" onClick={(e) => handleNavClick(e, link)}>
+					<div className="container mx-auto px-4 py-4 space-y-4" suppressHydrationWarning>
+						{siteNavigation.header.map((link) => (
+							<Link key={link.href} href={link.href} className="block text-sm text-gray-300 hover:text-purple transition-colors" onClick={(e) => handleNavClick(e, link.href)}>
 								{link.label}
 							</Link>
 						))}

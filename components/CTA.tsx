@@ -2,8 +2,7 @@
 
 import ShopifyCheckout from "./ShopifyCheckout";
 import { CheckCircle } from "lucide-react";
-
-const benefits = ["Premium 4 lbs Substrate", "Made in USA", "Free Shipping", "Bulk Discounts"];
+import { defaultCTAContent } from "@/blocks/CTA/defaults";
 
 export default function CTA() {
 	return (
@@ -13,16 +12,16 @@ export default function CTA() {
 				<div className="space-y-6">
 					<div className="space-y-4">
 						<h2 id="cta-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-							Ready to Start Growing?
+							{defaultCTAContent.heading}
 						</h2>
-						<p className="text-lg md:text-xl text-gray-300">Join thousands of successful growers using our premium all-in-one grow bags.</p>
+						<p className="text-lg md:text-xl text-gray-300">{defaultCTAContent.description}</p>
 					</div>
 
 					<div className="grid grid-cols-2 gap-4">
-						{benefits.map((benefit, index) => (
-							<div key={index} className="flex items-center space-x-2">
+						{defaultCTAContent.benefits.map((benefit, index) => (
+							<div key={`benefit-${index}`} className="flex items-center space-x-2">
 								<CheckCircle className="w-5 h-5 text-purple" />
-								<span className="text-sm md:text-base text-gray-300">{benefit}</span>
+								<span className="text-sm md:text-base text-gray-300">{benefit.text}</span>
 							</div>
 						))}
 					</div>
@@ -31,13 +30,13 @@ export default function CTA() {
 						<div className="flex items-center space-x-4">
 							<div className="flex -space-x-2">
 								{[...Array(3)].map((_, i) => (
-									<div key={i} className="w-8 h-8 rounded-full bg-purple/20 border-2 border-purple flex items-center justify-center">
+									<div key={`star-${i}`} className="w-8 h-8 rounded-full bg-purple/20 border-2 border-purple flex items-center justify-center">
 										<span className="text-xs text-white">★</span>
 									</div>
 								))}
 							</div>
 							<div className="text-sm text-gray-300">
-								<span className="text-white font-semibold">4.9/5</span> from over 100+ reviews
+								<span className="text-white font-semibold">{defaultCTAContent.rating.score}</span> {defaultCTAContent.rating.text}
 							</div>
 						</div>
 					</div>
@@ -47,7 +46,7 @@ export default function CTA() {
 				<div className="relative">
 					<div className="bg-secondary/50 backdrop-blur-sm p-6 rounded-xl border border-purple/20">
 						<div className="absolute -top-3 -right-3 bg-purple px-4 py-1 rounded-full">
-							<span className="text-sm font-semibold text-white">Limited Time Offer</span>
+							<span className="text-sm font-semibold text-white">{defaultCTAContent.limitedTimeOffer}</span>
 						</div>
 						<ShopifyCheckout />
 					</div>

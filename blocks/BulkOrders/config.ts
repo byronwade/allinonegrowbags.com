@@ -1,4 +1,5 @@
 import type { Block } from "@/types/payload";
+import { defaultBulkOrdersContent } from "./defaults";
 
 export const BulkOrdersBlock: Block = {
 	slug: "bulkOrders",
@@ -12,12 +13,14 @@ export const BulkOrdersBlock: Block = {
 			type: "text",
 			required: true,
 			label: "Heading",
+			defaultValue: defaultBulkOrdersContent.heading,
 		},
 		{
 			name: "description",
 			type: "textarea",
 			required: true,
 			label: "Description",
+			defaultValue: defaultBulkOrdersContent.description,
 		},
 		{
 			name: "tiers",
@@ -25,6 +28,7 @@ export const BulkOrdersBlock: Block = {
 			required: true,
 			minRows: 1,
 			maxRows: 5,
+			defaultValue: defaultBulkOrdersContent.tiers,
 			labels: {
 				singular: "Tier",
 				plural: "Tiers",
@@ -52,6 +56,7 @@ export const BulkOrdersBlock: Block = {
 			type: "text",
 			required: true,
 			label: "Footer Text",
+			defaultValue: defaultBulkOrdersContent.footerText,
 		},
 	],
-};
+} as const;

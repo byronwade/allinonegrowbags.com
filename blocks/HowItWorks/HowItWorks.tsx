@@ -17,7 +17,7 @@ interface HowItWorksProps {
 	};
 }
 
-export const HowItWorks: React.FC<HowItWorksProps> = ({ heading, steps, image }) => {
+export const HowItWorks = ({ heading, steps, image }: HowItWorksProps) => {
 	return (
 		<section className="container mx-auto py-8 md:py-12 px-4" id="how-it-works" aria-labelledby="how-it-works-heading">
 			<h2 id="how-it-works-heading" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 text-white">

@@ -1,5 +1,4 @@
 import ContactForm from "./ContactForm";
-import { lexicalRichTextToReact } from "@/lib/lexical";
 import { Hero } from "@/blocks/Hero/Hero";
 import { Features } from "@/blocks/Features/Features";
 import { ReferralStrip } from "@/blocks/ReferralStrip/ReferralStrip";
@@ -7,75 +6,38 @@ import { HowItWorks } from "@/blocks/HowItWorks/HowItWorks";
 import { MadeInUSA } from "@/blocks/MadeInUSA/MadeInUSA";
 import { BulkOrders } from "@/blocks/BulkOrders/BulkOrders";
 import { FAQ } from "@/blocks/FAQ/FAQ";
-import { CTA } from "@/blocks/CTA/CTA";
-import type { Route } from "next";
-
-type LexicalNode = {
-	type: string;
-	version: number;
-	format?: string;
-	style?: string;
-	text?: string;
-	tag?: number;
-	listType?: string;
-	url?: string;
-	target?: string;
-};
-
-interface MushroomType {
-	type: string;
-	id?: string;
-}
-
-interface Spec {
-	label: string;
-	value: string;
-	id?: string;
-}
-
-interface Feature {
-	title: string;
-	description: string;
-	icon?: string;
-	id?: string;
-}
-
-interface Step {
-	title: string;
-	description: string;
-	id?: string;
-}
-
-interface Tier {
-	quantity: number;
-	discount: number;
-	id?: string;
-}
-
-interface FAQItem {
-	question: string;
-	answer: string;
-	id?: string;
-}
-
-interface Media {
-	url: string;
-	alt: string;
-	id?: number;
-}
+import CTA from "@/blocks/CTA/CTA";
 
 interface BaseBlock {
 	id?: string;
 	blockName?: string;
 }
 
+interface ContentBlock extends BaseBlock {
+	blockType: "content";
+	content: string;
+}
+
 interface HeroBlock extends BaseBlock {
 	blockType: "hero";
 	heading: string;
 	description: string;
-	mushroomTypes: MushroomType[];
-	image: Media;
-	specs: Spec[];
+	mushroomTypes: { type: string }[];
+	image: {
+		url: string;
+		alt: string;
+	};
+	specs: {
+		label: string;
+		value: string;
+	}[];
+}
+
+interface Feature {
+	title: string;
+	description: string;
+	icon: "microscope" | "scale" | "filter" | "truck" | "heartHandshake" | "percent";
+	id?: string;
 }
 
 interface FeaturesBlock extends BaseBlock {
@@ -94,6 +56,12 @@ interface ReferralStripBlock extends BaseBlock {
 	};
 }
 
+interface Step {
+	title: string;
+	description: string;
+	id?: string;
+}
+
 interface HowItWorksBlock extends BaseBlock {
 	blockType: "howItWorks";
 	heading: string;
@@ -108,16 +76,28 @@ interface MadeInUSABlock extends BaseBlock {
 	blockType: "madeInUSA";
 	heading: string;
 	description: string;
-	benefits: string[];
-	image: Media;
-	flagImage: Media;
+	benefits: Array<{ text: string }>;
+	image: {
+		url: string;
+		alt: string;
+	};
+	flagImage: {
+		url: string;
+		alt: string;
+	};
+}
+
+interface BulkTier {
+	quantity: number;
+	discount: number;
+	id?: string;
 }
 
 interface BulkOrdersBlock extends BaseBlock {
 	blockType: "bulkOrders";
 	heading: string;
 	description: string;
-	tiers: Tier[];
+	tiers: BulkTier[];
 	footerText: string;
 }
 
@@ -125,7 +105,11 @@ interface FAQBlock extends BaseBlock {
 	blockType: "faq";
 	heading: string;
 	description: string;
-	faqs: FAQItem[];
+	faqs: {
+		question: string;
+		answer: string;
+		id?: string;
+	}[];
 }
 
 interface CTABlock extends BaseBlock {
@@ -138,66 +122,91 @@ interface CTABlock extends BaseBlock {
 	secondaryButtonLink?: string;
 }
 
-interface ContentBlock extends BaseBlock {
-	blockType: "content";
-	content: {
-		root: LexicalNode;
-	};
-}
-
 interface ContactBlock extends BaseBlock {
 	blockType: "contact";
 }
 
-export type Block = HeroBlock | FeaturesBlock | ReferralStripBlock | HowItWorksBlock | MadeInUSABlock | BulkOrdersBlock | FAQBlock | CTABlock | ContentBlock | ContactBlock;
+export type BlockType = "hero" | "content" | "features" | "referralStrip" | "howItWorks" | "madeInUSA" | "bulkOrders" | "faq" | "cta" | "contact";
+
+export type PageBlock = HeroBlock | ContentBlock | FeaturesBlock | ReferralStripBlock | HowItWorksBlock | MadeInUSABlock | BulkOrdersBlock | FAQBlock | CTABlock | ContactBlock;
 
 interface BlockRendererProps {
-	blocks: Block[];
+	blocks: PageBlock[];
 }
 
-export function BlockRenderer({ blocks }: BlockRendererProps) {
-	console.log("Rendering blocks:", blocks);
+function isPageBlock(block: unknown): block is PageBlock {
+	return typeof block === "object" && block !== null && "blockType" in block && typeof (block as { blockType: unknown }).blockType === "string";
+}
 
-	if (!blocks) return null;
+export default function BlockRenderer({ blocks }: BlockRendererProps) {
+	if (!Array.isArray(blocks)) {
+		console.warn("Invalid blocks prop:", blocks);
+		return null;
+	}
 
 	return (
-		<div className="space-y-12">
+		<>
 			{blocks.map((block, index) => {
-				console.log("Processing block:", block.blockType);
+				if (!isPageBlock(block)) {
+					console.warn("Invalid block:", block);
+					return null;
+				}
 
-				switch (block.blockType) {
-					case "hero":
-						return <Hero key={block.id || index} heading={block.heading} description={block.description} mushroomTypes={block.mushroomTypes.map((mt) => mt.type)} image={block.image} specs={block.specs} />;
-					case "features":
-						return <Features key={block.id || index} heading={block.heading} subheading={block.subheading} features={block.features} />;
-					case "referralStrip":
-						return <ReferralStrip key={block.id || index} text={block.text} link={block.link} />;
-					case "howItWorks":
-						return <HowItWorks key={block.id || index} heading={block.heading} steps={block.steps} image={block.image} />;
-					case "madeInUSA":
-						return <MadeInUSA key={block.id || index} heading={block.heading} description={block.description} benefits={block.benefits} image={block.image} flagImage={block.flagImage} />;
-					case "bulkOrders":
-						return <BulkOrders key={block.id || index} heading={block.heading} description={block.description} tiers={block.tiers} footerText={block.footerText} />;
-					case "faq":
-						return <FAQ key={block.id || index} heading={block.heading} description={block.description} faqs={block.faqs} />;
-					case "cta":
-						return <CTA key={block.id || index} heading={block.heading} description={block.description} primaryButtonText={block.primaryButtonText} primaryButtonLink={`/${block.primaryButtonLink}` as Route} secondaryButtonText={block.secondaryButtonText} secondaryButtonLink={block.secondaryButtonLink ? (`/${block.secondaryButtonLink}` as Route) : undefined} />;
-					case "content":
-						if (block.content) {
-							return (
-								<div key={block.id || index} className="prose prose-invert max-w-none">
-									{lexicalRichTextToReact(block.content)}
-								</div>
-							);
+				const blockType = block.blockType as BlockType;
+				switch (blockType) {
+					case "content": {
+						const contentBlock = block as ContentBlock;
+						if (!contentBlock.content) return null;
+						return (
+							<div key={index} className="prose-headings:text-white prose-p:text-gray-300 prose-strong:text-white prose-em:text-gray-200">
+								<div dangerouslySetInnerHTML={{ __html: contentBlock.content }} />
+							</div>
+						);
+					}
+					case "hero": {
+						const heroBlock = block as HeroBlock;
+						return <Hero key={heroBlock.id || index} heading={heroBlock.heading} description={heroBlock.description} mushroomTypes={heroBlock.mushroomTypes.map((mt) => mt.type)} image={heroBlock.image} specs={heroBlock.specs} />;
+					}
+					case "features": {
+						const featuresBlock = block as FeaturesBlock;
+						return <Features key={featuresBlock.id || index} heading={featuresBlock.heading} subheading={featuresBlock.subheading} features={featuresBlock.features} />;
+					}
+					case "referralStrip": {
+						const referralStripBlock = block as ReferralStripBlock;
+						return <ReferralStrip key={referralStripBlock.id || index} text={referralStripBlock.text} link={referralStripBlock.link} />;
+					}
+					case "howItWorks": {
+						const howItWorksBlock = block as HowItWorksBlock;
+						return <HowItWorks key={howItWorksBlock.id || index} heading={howItWorksBlock.heading} steps={howItWorksBlock.steps} image={howItWorksBlock.image} />;
+					}
+					case "madeInUSA": {
+						const madeInUSABlock = block as MadeInUSABlock;
+						return <MadeInUSA key={madeInUSABlock.id || index} heading={madeInUSABlock.heading} description={madeInUSABlock.description} benefits={madeInUSABlock.benefits} image={madeInUSABlock.image} flagImage={madeInUSABlock.flagImage} />;
+					}
+					case "bulkOrders": {
+						const bulkOrdersBlock = block as BulkOrdersBlock;
+						return <BulkOrders key={bulkOrdersBlock.id || index} heading={bulkOrdersBlock.heading} description={bulkOrdersBlock.description} tiers={bulkOrdersBlock.tiers} footerText={bulkOrdersBlock.footerText} />;
+					}
+					case "faq": {
+						const faqBlock = block as FAQBlock;
+						if (!faqBlock.heading || !faqBlock.description || !Array.isArray(faqBlock.faqs)) {
+							console.warn("Invalid FAQ block data:", faqBlock);
+							return null;
 						}
-						return null;
-					case "contact":
-						return <ContactForm key={block.id || index} />;
+						return <FAQ key={faqBlock.id || index} heading={faqBlock.heading} description={faqBlock.description} faqs={faqBlock.faqs} />;
+					}
+					case "cta": {
+						return <CTA key={block.id || index} />;
+					}
+					case "contact": {
+						const contactBlock = block as ContactBlock;
+						return <ContactForm key={contactBlock.id || index} />;
+					}
 					default:
-						console.warn("Unknown block type:", block.blockType);
+						console.warn("Unknown block type:", blockType);
 						return null;
 				}
 			})}
-		</div>
+		</>
 	);
 }

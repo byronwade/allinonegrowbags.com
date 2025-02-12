@@ -199,8 +199,17 @@ export interface Page {
         | {
             heading: string;
             description: string;
-            primaryButtonText: string;
-            primaryButtonLink: string;
+            benefits: {
+              text: string;
+              id?: string | null;
+            }[];
+            rating: {
+              score: string;
+              text: string;
+            };
+            limitedTimeOffer: string;
+            primaryButtonText?: string | null;
+            primaryButtonLink?: string | null;
             secondaryButtonText?: string | null;
             secondaryButtonLink?: string | null;
             id?: string | null;
@@ -219,11 +228,13 @@ export interface Page {
           }
         | {
             heading: string;
-            steps: {
-              title: string;
-              description: string;
-              id?: string | null;
-            }[];
+            steps?:
+              | {
+                  title: string;
+                  description: string;
+                  id?: string | null;
+                }[]
+              | null;
             image: {
               url: string;
               alt: string;
@@ -235,10 +246,12 @@ export interface Page {
         | {
             heading: string;
             description: string;
-            benefits: {
-              text: string;
-              id?: string | null;
-            }[];
+            benefits?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
             image: {
               url: string;
               alt: string;
@@ -359,6 +372,14 @@ export interface Post {
    */
   publishedAt?: string | null;
   slug?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -402,6 +423,14 @@ export interface Guide {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   slug?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -697,6 +726,19 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               description?: T;
+              benefits?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              rating?:
+                | T
+                | {
+                    score?: T;
+                    text?: T;
+                  };
+              limitedTimeOffer?: T;
               primaryButtonText?: T;
               primaryButtonLink?: T;
               secondaryButtonText?: T;
@@ -859,6 +901,13 @@ export interface PostsSelect<T extends boolean = true> {
   status?: T;
   publishedAt?: T;
   slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -892,6 +941,13 @@ export interface GuidesSelect<T extends boolean = true> {
   status?: T;
   publishedAt?: T;
   slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

@@ -1,5 +1,11 @@
-import { CollectionConfig } from "payload/types";
+import { CollectionConfig } from "payload";
+import type { Block } from "payload/types";
 import { contentBlock } from "../blocks";
+
+interface GuideData {
+	title?: string;
+	status?: string;
+}
 
 export const Guides: CollectionConfig = {
 	slug: "guides",
@@ -20,7 +26,7 @@ export const Guides: CollectionConfig = {
 		{
 			name: "content",
 			type: "blocks",
-			blocks: [contentBlock],
+			blocks: [contentBlock] as Block[],
 		},
 		{
 			name: "excerpt",
@@ -99,8 +105,8 @@ export const Guides: CollectionConfig = {
 			hooks: {
 				beforeChange: [
 					({ siblingData }) => {
-						if (siblingData.status === "published") {
-							return new Date();
+						if ((siblingData as GuideData).status === "published") {
+							return new Date().toISOString();
 						}
 						return undefined;
 					},
@@ -117,9 +123,9 @@ export const Guides: CollectionConfig = {
 			hooks: {
 				beforeValidate: [
 					({ value, data }) => {
-						if (!value && data?.title) {
-							return data.title
-								.toLowerCase()
+						if (!value && (data as GuideData)?.title) {
+							return (data as GuideData).title
+								?.toLowerCase()
 								.replace(/[^a-z0-9]/g, "-")
 								.replace(/-+/g, "-");
 						}
@@ -132,4 +138,4 @@ export const Guides: CollectionConfig = {
 	versions: {
 		drafts: true,
 	},
-};
+} as const;
