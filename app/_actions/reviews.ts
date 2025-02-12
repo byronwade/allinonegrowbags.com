@@ -1,71 +1,68 @@
 import { cache } from "react";
-import { payload } from "@/payload";
-import { Review } from "@/payload-types";
+import { client as payloadPromise } from "../_lib/payload";
+import { Review, Media } from "@/payload-types";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 const REVIEWS_TAG = "reviews";
 
-export const getReviews = cache(
-	async (options?: { page?: number; limit?: number; featured?: boolean; status?: "pending" | "approved" | "rejected" }) => {
-		const { page = 1, limit = 10, featured, status = "approved" } = options || {};
+export const getReviews = cache(async (options?: { page?: number; limit?: number; featured?: boolean; status?: "pending" | "approved" | "rejected" }) => {
+	const { page = 1, limit = 10, featured, status = "approved" } = options || {};
 
-		try {
-			const reviews = await payload.find({
-				collection: "reviews",
-				where: {
-					status: {
-						equals: status,
-					},
-					...(featured
-						? {
-								featured: {
-									equals: true,
-								},
-							}
-						: {}),
+	try {
+		const payload = await payloadPromise;
+		const reviews = await payload.find({
+			collection: "reviews",
+			where: {
+				status: {
+					equals: status,
 				},
-				page,
-				limit,
-				sort: "-createdAt",
-			});
+				...(featured
+					? {
+							featured: {
+								equals: true,
+							},
+						}
+					: {}),
+			},
+			page,
+			limit,
+			sort: "-createdAt",
+		});
 
-			return reviews;
-		} catch (error) {
-			console.error("Error fetching reviews:", error);
-			throw error;
-		}
-	},
-	[REVIEWS_TAG]
-);
+		return reviews;
+	} catch (error) {
+		console.error("Error fetching reviews:", error);
+		throw error;
+	}
+});
 
-export const getFeaturedReviews = cache(
-	async (limit: number = 3) => {
-		try {
-			const reviews = await payload.find({
-				collection: "reviews",
-				where: {
-					status: {
-						equals: "approved",
-					},
-					featured: {
-						equals: true,
-					},
+export const getFeaturedReviews = cache(async (limit: number = 3) => {
+	try {
+		const payload = await payloadPromise;
+		const reviews = await payload.find({
+			collection: "reviews",
+			where: {
+				status: {
+					equals: "approved",
 				},
-				limit,
-				sort: "-createdAt",
-			});
+				featured: {
+					equals: true,
+				},
+			},
+			limit,
+			sort: "-createdAt",
+		});
 
-			return reviews.docs as Review[];
-		} catch (error) {
-			console.error("Error fetching featured reviews:", error);
-			throw error;
-		}
-	},
-	[REVIEWS_TAG]
-);
+		return reviews.docs as Review[];
+	} catch (error) {
+		console.error("Error fetching featured reviews:", error);
+		throw error;
+	}
+});
 
 export const getAverageRating = cache(async () => {
 	try {
+		const payload = await payloadPromise;
 		const reviews = await payload.find({
 			collection: "reviews",
 			where: {
@@ -78,16 +75,17 @@ export const getAverageRating = cache(async () => {
 
 		if (!reviews.docs.length) return 0;
 
-		const total = reviews.docs.reduce((acc: number, review) => acc + (review.rating as number), 0);
+		const total = reviews.docs.reduce((acc: number, review: Review) => acc + (review.rating as number), 0);
 		return total / reviews.docs.length;
 	} catch (error) {
 		console.error("Error calculating average rating:", error);
 		throw error;
 	}
-}, [REVIEWS_TAG]);
+});
 
-export async function submitReview(data: { customerName: string; rating: number; reviewText: string; purchasedProduct: string; customerLocation?: string; customerImage?: string }) {
+export async function submitReview(data: { customerName: string; rating: number; reviewText: string; purchasedProduct: string; customerLocation?: string; customerImage?: Media | null }) {
 	try {
+		const payload = await payloadPromise;
 		await payload.create({
 			collection: "reviews",
 			data: {
@@ -110,6 +108,7 @@ export async function submitReview(data: { customerName: string; rating: number;
 
 export const getReviewStats = cache(async () => {
 	try {
+		const payload = await payloadPromise;
 		const reviews = await payload.find({
 			collection: "reviews",
 			where: {
@@ -149,4 +148,4 @@ export const getReviewStats = cache(async () => {
 		console.error("Error fetching review stats:", error);
 		throw error;
 	}
-}, [REVIEWS_TAG]);
+});

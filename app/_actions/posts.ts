@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { payload } from "@/payload";
+import { client as payloadPromise } from "../_lib/payload";
 import { Post } from "@/payload-types";
 import { notFound } from "next/navigation";
 
@@ -7,6 +7,7 @@ export type PostCategory = "growing-tips" | "product-reviews" | "news" | "tutori
 
 export const getPostBySlug = cache(async (slug: string) => {
 	try {
+		const payload = await payloadPromise;
 		const posts = await payload.find({
 			collection: "posts",
 			where: {
@@ -37,6 +38,7 @@ export const getPosts = cache(async (options?: { page?: number; limit?: number; 
 	const { page = 1, limit = 10, category } = options || {};
 
 	try {
+		const payload = await payloadPromise;
 		const posts = await payload.find({
 			collection: "posts",
 			where: {
@@ -68,6 +70,7 @@ export const getPosts = cache(async (options?: { page?: number; limit?: number; 
 
 export const getRecentPosts = cache(async (limit: number = 3) => {
 	try {
+		const payload = await payloadPromise;
 		const posts = await payload.find({
 			collection: "posts",
 			where: {
@@ -91,6 +94,7 @@ export const getRecentPosts = cache(async (limit: number = 3) => {
 
 export const getPostsByCategory = cache(async (category: PostCategory, limit: number = 10) => {
 	try {
+		const payload = await payloadPromise;
 		const posts = await payload.find({
 			collection: "posts",
 			where: {

@@ -37,12 +37,38 @@ export const Media: CollectionConfig = {
 			name: "alt",
 			type: "text",
 			required: false,
+			defaultValue: "",
 			label: "Alt Text",
+			admin: {
+				description: "Provide a descriptive text that explains the image for screen readers and SEO",
+			},
+			hooks: {
+				beforeValidate: [
+					({ value, data }: { value: string | null; data?: { filename?: string } }) => {
+						if (!value && data?.filename) {
+							return data.filename.split(".").slice(0, -1).join(".");
+						}
+						return value || "";
+					},
+				],
+			},
 		},
 		{
 			name: "caption",
 			type: "text",
 			label: "Caption",
+			required: false,
+			defaultValue: "",
 		},
 	],
+	hooks: {
+		beforeChange: [
+			({ data }: { data: { alt?: string | null; filename?: string } }) => {
+				if (!data.alt) {
+					data.alt = data.filename ? data.filename.split(".").slice(0, -1).join(".") : "Image";
+				}
+				return data;
+			},
+		],
+	},
 };

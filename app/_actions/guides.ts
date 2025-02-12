@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { payload } from "@/payload";
+import { client as payloadPromise } from "../_lib/payload";
 import { Guide } from "@/payload-types";
 import { notFound } from "next/navigation";
 
@@ -7,6 +7,7 @@ export type GuideDifficulty = "beginner" | "intermediate" | "advanced";
 
 export const getGuideBySlug = cache(async (slug: string) => {
 	try {
+		const payload = await payloadPromise;
 		const guides = await payload.find({
 			collection: "guides",
 			where: {
@@ -37,6 +38,7 @@ export const getGuides = cache(async (options?: { page?: number; limit?: number;
 	const { page = 1, limit = 10, difficulty } = options || {};
 
 	try {
+		const payload = await payloadPromise;
 		const guides = await payload.find({
 			collection: "guides",
 			where: {
@@ -68,6 +70,7 @@ export const getGuides = cache(async (options?: { page?: number; limit?: number;
 
 export const getRecentGuides = cache(async (limit: number = 3) => {
 	try {
+		const payload = await payloadPromise;
 		const guides = await payload.find({
 			collection: "guides",
 			where: {
@@ -91,6 +94,7 @@ export const getRecentGuides = cache(async (limit: number = 3) => {
 
 export const getGuidesByDifficulty = cache(async (difficulty: GuideDifficulty, limit: number = 10) => {
 	try {
+		const payload = await payloadPromise;
 		const guides = await payload.find({
 			collection: "guides",
 			where: {

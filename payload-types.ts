@@ -97,6 +97,9 @@ export interface User {
  */
 export interface Media {
   id: number;
+  /**
+   * Provide a descriptive text that explains the image for screen readers and SEO
+   */
   alt?: string | null;
   caption?: string | null;
   updatedAt: string;
@@ -272,6 +275,11 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'faq';
+          }
+        | {
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contact';
           }
       )[]
     | null;
@@ -783,6 +791,12 @@ export interface PagesSelect<T extends boolean = true> {
                     answer?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        contact?:
+          | T
+          | {
               id?: T;
               blockName?: T;
             };

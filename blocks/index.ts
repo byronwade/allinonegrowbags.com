@@ -44,6 +44,15 @@ export const contentBlock: Block = {
 	],
 };
 
+export const contactBlock: Block = {
+	slug: "contact",
+	labels: {
+		singular: "Contact Block",
+		plural: "Contact Blocks",
+	},
+	fields: [], // No fields needed as it's a static component
+};
+
 // Export block configs with original names
 export { HeroBlock, FeaturesBlock, ReferralStripBlock, HowItWorksBlock, MadeInUSABlock, BulkOrdersBlock, FAQBlock, CTABlock };
 
@@ -68,7 +77,11 @@ export const blocks = {
 	faq: faqBlock,
 	cta: ctaBlock,
 	content: contentBlock,
+	contact: contactBlock,
 } as const;
 
 // Re-export block type
 export type { Block } from "@/types/payload";
+
+// Update the Pages collection blocks array to include the contact block
+export const pageBlocks = [heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock, contactBlock];

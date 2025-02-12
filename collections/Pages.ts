@@ -1,5 +1,5 @@
 import { CollectionConfig } from "payload";
-import { heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock } from "../blocks";
+import { heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock, contactBlock } from "../blocks";
 
 interface PageData {
 	isHomePage?: boolean;
@@ -104,7 +104,7 @@ export const Pages: CollectionConfig = {
 		{
 			name: "blocks",
 			type: "blocks",
-			blocks: [heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock],
+			blocks: [heroBlock, contentBlock, featuresBlock, ctaBlock, referralStripBlock, howItWorksBlock, madeInUSABlock, bulkOrdersBlock, faqBlock, contactBlock],
 		},
 	],
 	hooks: {

@@ -14,8 +14,16 @@ import { Reviews } from "./collections/Reviews";
 import { Settings } from "./collections/Settings";
 import { Navigation } from "./collections/Navigation";
 
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+
 export default buildConfig({
-	serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
+	serverURL,
+	admin: {
+		user: "users",
+		meta: {
+			titleSuffix: "- ZugzBag Admin",
+		},
+	},
 	secret: process.env.PAYLOAD_SECRET || "",
 	editor: lexicalEditor({}),
 	db: vercelPostgresAdapter({
@@ -28,7 +36,11 @@ export default buildConfig({
 		vercelBlobStorage({
 			enabled: true,
 			collections: {
-				media: true,
+				media: {
+					disableLocalStorage: true,
+					disablePayloadAccessControl: true,
+					generateFileURL: ({ filename }) => `${serverURL}/media/${filename}`,
+				},
 			},
 			token: process.env.BLOB_READ_WRITE_TOKEN || "",
 		}),
