@@ -1,0 +1,97 @@
+export const metadata = {
+    title: "Beginner's Guide to Growing Mushrooms: Easy Step-by-Step Instructions",
+    description: "Learn how to grow mushrooms at home with this beginner-friendly guide. Perfect for first-time growers using all-in-one grow bags. Start your mushroom-growing journey today!",
+    date: '2024-02-20',
+    readTime: '10 min read',
+    author: 'ZugzBag Team',
+    image: '/3_how-to-use-all-in-one-grow-bags.jpg',
+    keywords: ['beginner', 'mushroom growing', 'cultivation', 'grow bags', 'sterilization', 'inoculation', 'colonization']
+};
+
+<GuideContent metadata={metadata} slug="beginners-guide-to-growing-mushrooms">
+    <PostHeader {...metadata} />
+
+    <Callout type="info" icon="🍄">
+        New to mushroom growing? This beginner-friendly guide will walk you through every step of the process, from setup to harvest, using all-in-one grow bags. Perfect for first-time growers!
+    </Callout>
+
+    <GuideStep number={1} title="Preparation: Gather Your Supplies">
+        Before you start growing mushrooms, make sure you have all the essential tools and materials ready:
+
+        - **Clean workspace or still air box**: Prevents contamination.
+        - **Disposable gloves**: Keeps your hands sterile.
+        - **70% isopropyl alcohol**: For sanitizing surfaces and tools.
+        - **Paper towels**: For cleaning and drying.
+        - **ZugzBag all-in-one grow bag**: Your all-in-one solution for mushroom cultivation.
+        - **Spore syringe or liquid culture**: The starting point for your mushrooms.
+        - **Temperature control method**: Maintains ideal growing conditions.
+
+        <Callout type="tip" icon="💡">
+            Pro Tip: Always purchase high-quality spores or liquid culture from reputable suppliers for the best results.
+        </Callout>
+    </GuideStep>
+
+    <GuideStep number={2} title="Workspace Setup: Create a Clean Environment">
+        A clean and organized workspace is key to successful mushroom cultivation:
+
+        - Choose a room with **minimal air movement** to reduce contamination risks.
+        - Clean all surfaces with **isopropyl alcohol** to ensure sterility.
+        - Set up a **temperature control system** to maintain 70-75°F (21-24°C).
+        - Ensure **indirect lighting** is available—mushrooms don't need direct sunlight.
+
+        <ResponsiveImage 
+            src="/3_how-to-use-all-in-one-grow-bags.jpg" 
+            alt="Clean Workspace for Mushroom Growing" 
+            caption="A properly prepared workspace ensures a contamination-free environment."
+        />
+    </GuideStep>
+
+    <GuideStep number={3} title="Sanitization: Keep Everything Sterile">
+        Sanitization is the most critical step to prevent contamination:
+
+        - Put on **fresh disposable gloves** before handling any materials.
+        - Clean the **injection port** of your grow bag thoroughly with alcohol.
+        - Wipe down all tools, including your spore syringe, with **70% isopropyl alcohol**.
+        - Allow all surfaces to **dry completely** before proceeding.
+
+        <Callout type="warning" icon="⚠️">
+            Skipping sanitization can lead to contamination, ruining your entire mushroom grow. Don't cut corners here!
+        </Callout>
+    </GuideStep>
+
+    <GuideStep number={4} title="Inoculation: Introduce Your Spores">
+        Now it's time to introduce your spores or liquid culture into the grow bag:
+
+        - **Shake your spore syringe** well to distribute spores evenly.
+        - Clean the needle with alcohol and insert it through the **injection port**.
+        - Inject **2-3cc of spore solution** into the grow bag.
+        - Seal the injection port to prevent contamination.
+
+        <ResponsiveImage 
+            src="/3_how-to-use-all-in-one-grow-bags.jpg" 
+            alt="Inoculating a Mushroom Grow Bag" 
+            caption="Proper inoculation technique ensures successful mushroom growth."
+        />
+    </GuideStep>
+
+    <GuideStep number={5} title="Colonization: Let the Magic Happen">
+        After inoculation, your mushrooms will begin to colonize the grow bag:
+
+        - Maintain a consistent temperature of **70-75°F (21-24°C)**.
+        - Keep the grow bag **away from direct sunlight**—indirect light is best.
+        - Store the bag **upright** in a clean, undisturbed area.
+        - Check daily for **signs of growth** (white mycelium spreading through the substrate).
+
+        <Callout type="tip" icon="💡">
+            Patience is key! Colonization typically takes 2-3 weeks, depending on the mushroom species.
+        </Callout>
+    </GuideStep>
+
+    ## What's Next?
+
+    Once your grow bag is fully colonized, it's time to move on to the next stage: fruiting. This is when your mushrooms will start to grow and mature. Stay tuned for our next guide on creating optimal fruiting conditions!
+
+    <Button asChild>
+        <Link href="/guides/optimal-conditions">Learn About Optimal Fruiting Conditions →</Link>
+    </Button>
+</GuideContent>

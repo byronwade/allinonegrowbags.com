@@ -144,6 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en" className="dark">
 			<head>
+				<Script id="inbox" src="https://cdn.shopify.com/extensions/d6c758ea-0956-449c-a297-40e060d870cb/inbox-1225/assets/shopifyChatV1Widget.js" />
 				<Script id="organization-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
 				<Script id="product-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
 				<Script id="website-jsonld" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />

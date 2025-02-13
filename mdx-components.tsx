@@ -8,6 +8,8 @@ import { GuideStep } from "@/components/mdx/guide-step";
 import { PostHeader } from "@/components/mdx/post-header";
 import { ClientLink } from "@/components/mdx/client-link";
 import type { Route } from "next";
+import { GuideContent, Table, TableHead, TableBody, TableRow, TableCell, TableHeader, FAQSection, FAQQuestion, FAQAnswer } from "@/components/mdx";
+import { AutoFAQSchema } from "@/components/mdx/AutoFAQSchema";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
@@ -31,11 +33,18 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		),
 		strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
 		em: ({ children }) => <em className="italic text-gray-300">{children}</em>,
-		code: ({ children }) => <code className="relative rounded bg-secondary/50 px-[0.3rem] py-[0.2rem] font-mono text-sm text-gray-300">{children}</code>,
+		code: ({ children }) => {
+			if (typeof children === "string") {
+				return <code className="relative rounded bg-secondary/50 px-[0.3rem] py-[0.2rem] font-mono text-sm text-gray-300">{children}</code>;
+			}
+			return null;
+		},
 
 		// Block elements
 		pre: CodeBlock,
 		img: ResponsiveImage,
+
+		// Custom components
 		ResponsiveImage,
 		Steps,
 		Callout,
@@ -43,6 +52,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		PostHeader,
 		Link: ClientLink,
 		Button,
+		GuideContent,
+		Table,
+		TableHead,
+		TableBody,
+		TableRow,
+		TableCell,
+		TableHeader,
+		FAQSection,
+		FAQQuestion,
+		FAQAnswer,
+		AutoFAQSchema,
 
 		// Extend with passed components
 		...components,

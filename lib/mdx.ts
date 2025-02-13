@@ -19,67 +19,86 @@ export async function getMDXPosts(contentType: "learn" | "guides") {
 	const getPosts = unstable_cache(
 		async () => {
 			const postsDirectory = path.join(process.cwd(), "app", contentType);
+			console.log(`Searching for posts in: ${postsDirectory}`);
 
 			if (!fs.existsSync(postsDirectory)) {
 				console.warn(`Directory not found: ${postsDirectory}`);
 				return [];
 			}
 
-			const posts = fs.readdirSync(postsDirectory);
+			// Recursively get all MDX files
+			function getAllMDXFiles(dir: string): string[] {
+				const entries = fs.readdirSync(dir, { withFileTypes: true });
+				console.log(`Found ${entries.length} entries in ${dir}`);
+
+				return entries.reduce<string[]>((files, entry) => {
+					const fullPath = path.join(dir, entry.name);
+
+					if (entry.isDirectory() && !entry.name.startsWith("_") && !entry.name.startsWith(".") && !entry.name.startsWith("[")) {
+						return [...files, ...getAllMDXFiles(fullPath)];
+					} else if (entry.isFile() && entry.name === "page.mdx") {
+						console.log(`Found MDX file: ${fullPath}`);
+						return [...files, fullPath];
+					}
+
+					return files;
+				}, []);
+			}
+
+			const mdxFiles = getAllMDXFiles(postsDirectory);
+			console.log(`Total MDX files found: ${mdxFiles.length}`);
 
 			const allPosts = await Promise.all(
-				posts
-					.filter((file) => {
-						const fullPath = path.join(postsDirectory, file);
-						return fs.statSync(fullPath).isDirectory() && !file.startsWith("_") && !file.startsWith(".") && !file.startsWith("[");
-					})
-					.map(async (dir) => {
-						const filePath = path.join(postsDirectory, dir, "page.mdx");
+				mdxFiles.map(async (filePath) => {
+					try {
+						const source = fs.readFileSync(filePath, "utf8");
+						const relativePath = path.relative(path.join(process.cwd(), "app"), filePath);
+						const slug = path.dirname(relativePath).split(path.sep).slice(1).join("/");
+						console.log(`Processing: ${slug}`);
 
-						if (!fs.existsSync(filePath)) {
-							console.warn(`No page.mdx found in ${dir}`);
+						// First, compile the MDX content
+						const { content } = await compileMDX({
+							source,
+							options: {
+								parseFrontmatter: false,
+							},
+						});
+
+						// Extract metadata from the source directly
+						const metadataMatch = source.match(/export\s+const\s+metadata\s*=\s*({[\s\S]*?});/);
+						if (!metadataMatch) {
+							console.warn(`No metadata found in ${filePath}`);
 							return null;
 						}
 
-						try {
-							const source = fs.readFileSync(filePath, "utf8");
+						// Safely evaluate the metadata object
+						const metadata = eval(`(${metadataMatch[1]})`);
 
-							// First, compile the MDX content
-							const { content } = await compileMDX({
-								source,
-								options: {
-									parseFrontmatter: false,
-								},
-							});
-
-							// Then, dynamically import the metadata
-							const mdxModule = await import(`@/app/${contentType}/${dir}/page.mdx`);
-							const metadata = mdxModule.metadata;
-
-							if (!metadata?.title || !metadata?.description || !metadata?.date || !metadata?.readTime) {
-								console.warn(`Missing required metadata in ${filePath}`);
-								return null;
-							}
-
-							return {
-								slug: dir,
-								title: metadata.title,
-								description: metadata.description,
-								date: metadata.date,
-								readTime: metadata.readTime,
-								author: metadata.author,
-								image: metadata.image,
-								keywords: metadata.keywords,
-								content,
-							} satisfies Post;
-						} catch (error) {
-							console.error(`Error processing ${filePath}:`, error);
+						if (!metadata?.title || !metadata?.description || !metadata?.date || !metadata?.readTime) {
+							console.warn(`Missing required metadata in ${filePath}`);
 							return null;
 						}
-					})
+
+						return {
+							slug,
+							title: metadata.title,
+							description: metadata.description,
+							date: metadata.date,
+							readTime: metadata.readTime,
+							author: metadata.author,
+							image: metadata.image,
+							keywords: metadata.keywords,
+							content,
+						} satisfies Post;
+					} catch (error) {
+						console.error(`Error processing ${filePath}:`, error);
+						return null;
+					}
+				})
 			);
 
 			const validPosts = allPosts.filter((post): post is NonNullable<typeof post> => post !== null);
+			console.log(`Found ${validPosts.length} valid posts`);
 			return validPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 		},
 		[`${contentType}-posts`],

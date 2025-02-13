@@ -1,77 +1,82 @@
+import { LearnContent } from "@/components/mdx";
+
 export const metadata = {
     title: "Getting Started with Mushroom Cultivation",
     description: "Learn the fundamentals of mushroom growing and discover why all-in-one grow bags are perfect for beginners.",
     date: '2024-02-20',
     readTime: '8 min read',
     author: 'ZugzBag Team',
-    image: '/3_how-to-use-all-in-one-grow-bags.jpg'
+    image: '/3_how-to-use-all-in-one-grow-bags.jpg',
+    keywords: ['getting started', 'beginner', 'mushroom cultivation', 'basics', 'mycelium', 'substrate', 'colonization', 'fruiting', 'grow bags']
 };
 
 <PostHeader {...metadata} />
 
-<Callout type="info">
-    New to mushroom growing? You're in the right place! This guide covers everything you need to know to start your cultivation journey.
-</Callout>
+<LearnContent metadata={metadata} slug="getting-started">
+    <Callout type="info">
+        New to mushroom growing? You're in the right place! This guide covers everything you need to know to start your cultivation journey.
+    </Callout>
 
-## Why Start Growing Mushrooms?
+    ## Why Start Growing Mushrooms?
 
-Growing your own mushrooms is not just a rewarding hobby - it's a journey into sustainable food production and mycological discovery. Whether you're interested in gourmet varieties or medicinal mushrooms, the process is both fascinating and fulfilling.
+    Growing your own mushrooms is not just a rewarding hobby - it's a journey into sustainable food production and mycological discovery. Whether you're interested in gourmet varieties or medicinal mushrooms, the process is both fascinating and fulfilling.
 
-<ResponsiveImage 
-    src="/3_how-to-use-all-in-one-grow-bags.jpg" 
-    alt="Various Mushroom Types" 
-    caption="Popular mushroom varieties for home cultivation"
-/>
+    <ResponsiveImage 
+        src="/3_how-to-use-all-in-one-grow-bags.jpg" 
+        alt="Various Mushroom Types" 
+        caption="Popular mushroom varieties for home cultivation"
+    />
 
-## Understanding the Basics
+    ## Understanding the Basics
 
-Before diving into the growing process, let's cover some fundamental concepts:
+    Before diving into the growing process, let's cover some fundamental concepts:
 
-1. **Mycelium**: The vegetative part of fungi that grows through substrate
-2. **Substrate**: The material mushrooms grow on (grains, sawdust, etc.)
-3. **Colonization**: The process of mycelium spreading through substrate
-4. **Fruiting**: The stage where mushrooms develop and grow
+    1. **Mycelium**: The vegetative part of fungi that grows through substrate
+    2. **Substrate**: The material mushrooms grow on (grains, sawdust, etc.)
+    3. **Colonization**: The process of mycelium spreading through substrate
+    4. **Fruiting**: The stage where mushrooms develop and grow
 
-<Callout type="warning">
-    Success in mushroom cultivation relies heavily on maintaining sterile conditions and following proper procedures.
-</Callout>
+    <Callout type="warning">
+        Success in mushroom cultivation relies heavily on maintaining sterile conditions and following proper procedures.
+    </Callout>
 
-## Why Choose All-in-One Grow Bags?
+    ## Why Choose All-in-One Grow Bags?
 
-For beginners, all-in-one grow bags offer several advantages:
+    For beginners, all-in-one grow bags offer several advantages:
 
-- **Convenience**: Everything you need in one package
-- **Reduced Contamination Risk**: Pre-sterilized and ready to use
-- **Cost-Effective**: No need for expensive equipment
-- **Space-Efficient**: Perfect for small spaces
-- **Consistent Results**: Standardized growing medium
+    - **Convenience**: Everything you need in one package
+    - **Reduced Contamination Risk**: Pre-sterilized and ready to use
+    - **Cost-Effective**: No need for expensive equipment
+    - **Space-Efficient**: Perfect for small spaces
+    - **Consistent Results**: Standardized growing medium
 
-<ResponsiveImage 
-    src="/0_All-in-one grow bags.jpg" 
-    alt="All-in-One Grow Bag" 
-    caption="Our specially designed all-in-one grow bags make cultivation simple"
-/>
+    <ResponsiveImage 
+        src="/0_All-in-one grow bags.jpg" 
+        alt="All-in-One Grow Bag" 
+        caption="Our specially designed all-in-one grow bags make cultivation simple"
+    />
 
-## Getting Started
+    ## Getting Started
 
-Ready to begin your mushroom growing journey? Here's what you'll need:
+    Ready to begin your mushroom growing journey? Here's what you'll need:
 
-1. ZugzBag all-in-one grow bag
-2. Spore syringe or liquid culture
-3. Basic supplies:
-   - 70% isopropyl alcohol
-   - Disposable gloves
-   - Paper towels
-   - Clean workspace
+    1. ZugzBag all-in-one grow bag
+    2. Spore syringe or liquid culture
+    3. Basic supplies:
+       - 70% isopropyl alcohol
+       - Disposable gloves
+       - Paper towels
+       - Clean workspace
 
-<Callout type="success">
-    With these supplies and our step-by-step guide, you'll be growing mushrooms in no time!
-</Callout>
+    <Callout type="success">
+        With these supplies and our step-by-step guide, you'll be growing mushrooms in no time!
+    </Callout>
 
-## Next Steps
+    ## Next Steps
 
-Now that you understand the basics, it's time to start growing! Check out our detailed guide for step-by-step instructions.
+    Now that you understand the basics, it's time to start growing! Check out our detailed guide for step-by-step instructions.
 
-<Button asChild>
-    <Link href="/guides/beginners-guide">View Complete Beginner's Guide →</Link>
-</Button> 
+    <Button asChild>
+        <Link href="/guides/beginners-guide">View Complete Beginner's Guide →</Link>
+    </Button>
+</LearnContent> 

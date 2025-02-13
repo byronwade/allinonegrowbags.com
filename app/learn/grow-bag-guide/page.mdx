@@ -1,29 +1,39 @@
+import { LearnContent } from "@/components/mdx";
+
 export const metadata = {
     title: 'All About Our Grow Bags',
     description: 'Detailed information about our all-in-one mushroom grow bags and how they work.',
     date: '2024-02-19',
     readTime: '4 min read',
     author: 'ZugzBag Team',
-    keywords: ['grow bags', 'mushroom cultivation', 'substrate', 'sterilization', 'filter patch'],
+    keywords: ['grow bags', 'mushroom cultivation', 'substrate', 'sterilization', 'filter patch', 'specifications', 'features'],
     image: '/images/grow-bag-guide.jpg'
 };
 
-# All About Our Grow Bags
+<LearnContent metadata={metadata} slug="grow-bag-guide">
+    <h1>All About Our Grow Bags</h1>
 
-Our all-in-one grow bags are designed to provide the perfect environment for mushroom cultivation, from colonization through fruiting.
+    <p>Our all-in-one grow bags are designed to provide the perfect environment for mushroom cultivation, from colonization through fruiting.</p>
 
-## Key Features
+    <h2>Key Features</h2>
 
-- **Pre-sterilized**: Every bag is sterilized in an autoclave under precise conditions
-- **Perfect Ratio**: Scientifically formulated grain-to-substrate ratio
-- **Filter Patch**: High-quality patch for optimal gas exchange
-- **Durable Design**: Heat-sealed for contamination resistance
+    <ul>
+        <li><strong>Pre-sterilized</strong>: Every bag is sterilized in an autoclave under precise conditions</li>
+        <li><strong>Perfect Ratio</strong>: Scientifically formulated grain-to-substrate ratio</li>
+        <li><strong>Filter Patch</strong>: High-quality patch for optimal gas exchange</li>
+        <li><strong>Durable Design</strong>: Heat-sealed for contamination resistance</li>
+    </ul>
 
-## Specifications
+    <h2>Specifications</h2>
 
-- Bag Size: 8" x 5" x 20"
-- Substrate Volume: 5 lbs
-- Filter Size: 0.2 micron
-- Shelf Life: 6 months (unopened)
+    <ul>
+        <li>Bag Size: 8" x 5" x 20"</li>
+        <li>Substrate Volume: 5 lbs</li>
+        <li>Filter Size: 0.2 micron</li>
+        <li>Shelf Life: 6 months (unopened)</li>
+    </ul>
 
-[Get Started Growing →](/learn/getting-started) 
+    <Button asChild>
+        <Link href="/learn/getting-started">Get Started Growing →</Link>
+    </Button>
+</LearnContent> 
