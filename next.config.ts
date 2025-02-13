@@ -1,28 +1,30 @@
-import { withPayload } from "@payloadcms/next/withPayload";
-import type { NextConfig } from "next";
-import type { Configuration } from "webpack";
+import createMDX from "@next/mdx";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 /** @type {import('next').NextConfig} */
-const nextConfig: NextConfig = {
+const nextConfig = {
 	reactStrictMode: true,
+	pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
 	images: {
 		remotePatterns: [
 			{
-				protocol: "https",
+				protocol: "https" as const,
 				hostname: "**",
 			},
 			{
-				protocol: "https",
+				protocol: "https" as const,
 				hostname: "localhost",
 			},
 			{
-				protocol: "http",
+				protocol: "http" as const,
 				hostname: "localhost",
 			},
 		],
-		formats: ["image/avif", "image/webp"],
 	},
 	experimental: {
+		mdxRs: true,
 		inlineCss: true,
 		typedRoutes: true,
 		reactCompiler: false,
@@ -39,25 +41,13 @@ const nextConfig: NextConfig = {
 			fullUrl: true,
 		},
 	},
-	webpack: (config: Configuration, { isServer }: { isServer: boolean }) => {
-		if (!isServer) {
-			config.resolve = {
-				...config.resolve,
-				fallback: {
-					fs: false,
-					net: false,
-					https: false,
-					child_process: false,
-					module: false,
-					dns: false,
-					readline: false,
-					worker_threads: false,
-					express: false,
-				},
-			};
-		}
-		return config;
-	},
 };
 
-export default withPayload(nextConfig);
+const withMDX = createMDX({
+	options: {
+		remarkPlugins: [remarkGfm],
+		rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+	},
+});
+
+export default withMDX(nextConfig);

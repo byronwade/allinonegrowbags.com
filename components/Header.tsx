@@ -5,24 +5,22 @@ import { Button } from "@/components/ui/button";
 import QuantitySelector from "./QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { ShoppingCart, Menu, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import type { Route } from "next";
 
 const VARIANT_ID = "7264768655420";
 
 interface NavLink {
 	label: string;
-	href: string;
+	href: Route;
 	isScroll?: boolean;
 }
 
 const navLinks: NavLink[] = [
-	{ label: "Features", href: "/#features", isScroll: true },
-	{ label: "How It Works", href: "/all-in-one-grow-bags" },
-	{ label: "Bulk Orders", href: "/#bulk-orders", isScroll: true },
-	{ label: "FAQ", href: "/#faq", isScroll: true },
-	{ label: "Contact", href: "/contact" },
+	{ label: "Learn", href: "/learn" as Route },
+	{ label: "Guides", href: "/guides" as Route },
+	{ label: "Contact", href: "/contact" as Route },
 ];
 
 export default function Header() {
@@ -49,26 +47,14 @@ export default function Header() {
 		e.preventDefault();
 		setMobileMenuOpen(false);
 
-		const [path, hash] = link.href.split("#");
-		const isCurrentPage = path === "/" ? pathname === "/" : pathname === path;
-
-		if (isCurrentPage && hash) {
-			// Same page scroll
-			const element = document.getElementById(hash);
+		if (link.isScroll) {
+			const id = link.href.split("#")[1];
+			const element = document.getElementById(id);
 			if (element) {
 				element.scrollIntoView({ behavior: "smooth" });
 			}
 		} else {
-			// Different page navigation
 			await router.push(link.href);
-			if (hash) {
-				setTimeout(() => {
-					const element = document.getElementById(hash);
-					if (element) {
-						element.scrollIntoView({ behavior: "smooth" });
-					}
-				}, 100);
-			}
 		}
 	};
 
@@ -123,8 +109,7 @@ export default function Header() {
 		<header className="bg-background border-b border-border sticky top-0 z-50">
 			<div className="container mx-auto px-4">
 				<div className="flex items-center justify-between h-16">
-					<Link href="/" className="flex items-center space-x-2">
-						<Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/sterile-all-in-one-mushroom-grow-bag-4-lbs-substrate-and-grain-filter-patch-112491-Hkoucg5alJXunr83eIolGhCMiHCxR3.webp" alt="ZugzBag Logo" width={40} height={40} className="rounded" />
+					<Link href="/" className="flex items-center">
 						<span className="font-bold text-xl text-white">ZugzBag</span>
 					</Link>
 
@@ -136,7 +121,7 @@ export default function Header() {
 								</Link>
 							))}
 						</nav>
-						<div className="flex items-center space-x-4">
+						<div className="flex items-center space-x-4" suppressHydrationWarning>
 							<div className="flex items-center space-x-2">
 								<span className="text-sm text-gray-300">Quantity:</span>
 								<QuantitySelector min={1} max={1000} />
@@ -156,9 +141,7 @@ export default function Header() {
 
 					<div className="md:hidden">
 						<Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-							{mobileMenuOpen ?
-								<X className="h-6 w-6 text-white" />
-							:	<Menu className="h-6 w-6 text-white" />}
+							{mobileMenuOpen ? <X className="h-6 w-6 text-white" /> : <Menu className="h-6 w-6 text-white" />}
 						</Button>
 					</div>
 				</div>
