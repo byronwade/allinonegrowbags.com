@@ -7,8 +7,20 @@ interface TableProps {
 }
 
 // Helper function to clean children of whitespace nodes
-function cleanChildren(children: React.ReactNode) {
-	return React.Children.toArray(children).filter((child) => React.isValidElement(child) && !(typeof child === "string" && child.trim() === ""));
+function cleanChildren(children: React.ReactNode): React.ReactNode[] {
+	return React.Children.toArray(children)
+		.filter((child) => {
+			if (typeof child === "string") {
+				return child.trim() !== "";
+			}
+			return React.isValidElement(child);
+		})
+		.map((child) => {
+			if (typeof child === "string") {
+				return child.trim();
+			}
+			return child;
+		});
 }
 
 export function Table({ children }: TableProps) {
@@ -36,9 +48,11 @@ export function TableRow({ children }: TableProps) {
 }
 
 export function TableHeader({ children }: TableProps) {
-	return <th className="border-r border-purple/20 p-4 text-left font-semibold text-white last:border-0">{typeof children === "string" ? children.trim() : cleanChildren(children)}</th>;
+	const cleanedChildren = cleanChildren(children);
+	return <th className="border-r border-purple/20 p-4 text-left font-semibold text-white last:border-0">{cleanedChildren}</th>;
 }
 
 export function TableCell({ children }: TableProps) {
-	return <td className="border-r border-purple/20 p-4 text-gray-300 last:border-0">{typeof children === "string" ? children.trim() : cleanChildren(children)}</td>;
+	const cleanedChildren = cleanChildren(children);
+	return <td className="border-r border-purple/20 p-4 text-gray-300 last:border-0">{cleanedChildren}</td>;
 }

@@ -42,8 +42,20 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		},
 
 		// Block elements
-		pre: CodeBlock,
-		img: ResponsiveImage,
+		pre: ({ children, ...props }) => {
+			if (typeof children === "string") {
+				return <CodeBlock {...props}>{children}</CodeBlock>;
+			}
+			return <pre {...props}>{children}</pre>;
+		},
+		img: ({ src, alt, width, height, ...props }) => {
+			if (src) {
+				const numWidth = width ? Number(width) : undefined;
+				const numHeight = height ? Number(height) : undefined;
+				return <ResponsiveImage src={src} alt={alt || ""} width={numWidth} height={numHeight} {...props} />;
+			}
+			return null;
+		},
 
 		// Custom components
 		ResponsiveImage,
