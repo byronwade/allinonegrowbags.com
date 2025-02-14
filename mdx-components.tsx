@@ -10,6 +10,7 @@ import { ClientLink } from "@/components/mdx/client-link";
 import type { Route } from "next";
 import { GuideContent, Table, TableHead, TableBody, TableRow, TableCell, TableHeader, FAQSection, FAQQuestion, FAQAnswer } from "@/components/mdx";
 import { AutoFAQSchema } from "@/components/mdx/AutoFAQSchema";
+import { FAQ } from "@/components/mdx/FAQ";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
 	return {
@@ -63,6 +64,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 		FAQQuestion,
 		FAQAnswer,
 		AutoFAQSchema,
+		FAQ,
 
 		// Extend with passed components
 		...components,

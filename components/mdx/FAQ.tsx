@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Script from "next/script";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface FAQProps {
 	children: React.ReactNode;
@@ -72,4 +73,24 @@ export function FAQQuestion({ children }: FAQProps) {
 
 export function FAQAnswer({ children }: FAQProps) {
 	return <div className="text-gray-300">{children}</div>;
+}
+
+interface FAQProps {
+	items: FAQItem[];
+}
+
+export function FAQ({ items }: FAQProps) {
+	return (
+		<div className="mt-12 space-y-4">
+			<h2 className="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+			<Accordion type="single" collapsible className="w-full space-y-1">
+				{items.map((item: FAQItem, index: number) => (
+					<AccordionItem key={index} value={`item-${index}`} className="border-b-0">
+						<AccordionTrigger className="text-left py-2 text-lg font-medium hover:no-underline hover:text-purple">{item.question}</AccordionTrigger>
+						<AccordionContent className="py-1 text-gray-300">{item.answer}</AccordionContent>
+					</AccordionItem>
+				))}
+			</Accordion>
+		</div>
+	);
 }

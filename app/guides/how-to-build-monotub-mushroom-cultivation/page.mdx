@@ -8,137 +8,158 @@ export const metadata = {
     slug: 'how-to-build-mushroom-monotub'
 };
 
-<PostHeader {...metadata} />
+<GuideContent metadata={metadata} slug="how-to-build-mushroom-monotub">
+    <Callout type="info" icon="🍄">
+        Building a monotub is a cost-effective way to grow mushrooms at scale. This guide covers everything from construction to harvest!
+    </Callout>
 
-<AutoFAQSchema content={`
-<FAQSection>
-    <FAQQuestion>How long does monotub colonization take?</FAQQuestion>
-    <FAQAnswer>Most species colonize in 2-3 weeks at 72-75°F. Slow growth may indicate low temperatures or contamination.</FAQAnswer>
-    
-    <FAQQuestion>Can I reuse a monotub?</FAQQuestion>
-    <FAQAnswer>Yes! Clean with a 10% bleach solution and replace filters. Discard tubs with contamination.</FAQAnswer>
-    
-    <FAQQuestion>How many holes should a monotub have?</FAQQuestion>
-    <FAQAnswer>Six 2-inch holes (8.5" from base) and three 1-inch holes (4.5" from base) for optimal passive FAE.</FAQAnswer>
-    
-    <FAQQuestion>What temperature is best for colonization?</FAQQuestion>
-    <FAQAnswer>72-75°F (22-24°C). Temperatures above 80°F increase contamination risks.</FAQAnswer>
-</FAQSection>
-`} />
+    <GuideStep number={1} title="Gathering Materials & Tools">
+        ### Essential Items:
+        - **64-quart clear plastic bin**  
+        - **1-inch & 2-inch hole saw drill bits**  
+        - **Self-healing injection port grain bags**  
+        - **Sterilized grain spawn** (rye, millet, or wheat berries)  
+        - **Bulk substrate** (manure-based or hardwood blend)  
+        - **70% isopropyl alcohol**  
+        - **Nitrile gloves** and microfiber towels  
 
-<Callout type="info" icon="🍄">
-    This guide covers every step to build and use a monotub for growing mushrooms—no prior experience required. Perfect for Psilocybe, Oyster, and Lion's Mane species.
-</Callout>
+        ### Optional Upgrades:
+        - Fresh air exchange (FAE) fan  
+        - Ultrasonic humidifier with hose  
+        - Programmable cycle timer  
+    </GuideStep>
 
----
+    <GuideStep number={2} title="Constructing the Monotub">
+        Follow these steps for proper hole placement:
 
-## Materials & Tools
-### Essential Items:
-- **64-quart clear plastic bin**  
-- **1-inch & 2-inch hole saw drill bits**  
-- **Self-healing injection port grain bags**  
-- **Sterilized grain spawn** (rye, millet, or wheat berries)  
-- **Bulk substrate** (manure-based or hardwood blend)  
-- **70% isopropyl alcohol**  
-- **Nitrile gloves** and microfiber towels  
+        1. **Mark positions**:  
+           - **Lower holes (2-inch)**: 8.5 inches from base (2 per long side, 1 per short side)  
+           - **Upper holes (1-inch)**: 4.5 inches from base (3 per long side)  
+        2. **Drill holes** in reverse mode to prevent plastic cracking  
+        3. **Deburr edges** with a utility knife  
 
-### Optional Upgrades:
-- Fresh air exchange (FAE) fan  
-- Ultrasonic humidifier with hose  
-- Programmable cycle timer  
+        <ResponsiveImage 
+            src="/monotub-hole-diagram.jpg" 
+            alt="Monotub Air Hole Placement Diagram" 
+            caption="Proper hole placement for passive air exchange"
+        />
+    </GuideStep>
 
----
+    <GuideStep number={3} title="Preparing Grain Spawn">
+        ### Inoculation Process:
+        1. **Sterilize workspace**: Wipe surfaces with 70% isopropyl alcohol  
+        2. **Inject spores**: Use 3-5cc of spore syringe or liquid culture into grain bags  
+        3. **Colonize**: Store at 72-75°F for 14-28 days until fully white  
 
-## Step 1: Construct the Monotub
-### Drilling Air Holes:
-1. **Mark positions**:  
-   - **Lower holes (2-inch)**: 8.5 inches from base (2 per long side, 1 per short side).  
-   - **Upper holes (1-inch)**: 4.5 inches from base (3 per long side).  
-2. **Drill holes** in reverse mode to prevent plastic cracking.  
-3. **Deburr edges** with a utility knife.  
+        <Callout type="warning" icon="⚠️">
+            Discard bags with green mold, sour smells, or excessive moisture—these indicate contamination.
+        </Callout>
+    </GuideStep>
 
-<ResponsiveImage 
-    src="/monotub-hole-diagram.jpg" 
-    alt="Monotub Air Hole Placement Diagram" 
-    caption="Proper hole placement for passive air exchange"
-/>
+    <GuideStep number={4} title="Mixing Spawn & Substrate">
+        ### Substrate Recipes:
+        - **Manure-based**: 50% pasteurized horse manure, 50% coconut coir  
+        - **Hardwood-based**: 80% oak pellets, 20% wheat bran  
 
----
+        ### Layering Process:
+        1. **Sanitize tub**: Wipe with alcohol  
+        2. **Add substrate**: Layer 1-inch substrate, grain spawn, and repeat  
+        3. **Top layer**: Finish with 1-inch substrate casing  
 
-## Step 2: Prepare Grain Spawn
-### Inoculation Process:
-1. **Sterilize workspace**: Wipe surfaces with 70% isopropyl alcohol.  
-2. **Inject spores**: Use 3-5cc of spore syringe or liquid culture into grain bags.  
-3. **Colonize**: Store at 72-75°F for 14-28 days until fully white.  
+        <Callout type="tip" icon="💡">
+            A proper substrate-to-spawn ratio is crucial for success. Aim for 2:1 or 3:1 substrate to spawn.
+        </Callout>
+    </GuideStep>
 
-<Callout type="warning" icon="⚠️">
-    Discard bags with green mold, sour smells, or excessive moisture—these indicate contamination.
-</Callout>
+    <GuideStep number={5} title="Colonization Phase">
+        Monitor these conditions for optimal growth:
+        
+        - **Temperature**: Keep at 72-75°F  
+        - **Humidity**: Maintain 90-95%  
+        - **Light**: Provide indirect ambient light (12h/day)  
+        - **Timeline**: Allow 2-3 weeks for full colonization  
 
----
+        <ResponsiveImage 
+            src="/monotub-colonization.jpg" 
+            alt="Monotub Colonization Progress" 
+            caption="Mycelium spreading through substrate"
+        />
+    </GuideStep>
 
-## Step 3: Mix Spawn & Substrate
-### Substrate Recipes:
-- **Manure-based**: 50% pasteurized horse manure, 50% coconut coir.  
-- **Hardwood-based**: 80% oak pellets, 20% wheat bran.  
+    <GuideStep number={6} title="Fruiting & Harvesting">
+        ### Triggering Mushroom Growth:
+        1. **Introduce FAE**: Remove micropore tape from lower holes  
+        2. **Mist daily**: Maintain 85-90% humidity with distilled water  
+        3. **Harvest**:  
+           - **Psilocybe**: Before the veil breaks  
+           - **Oyster Mushrooms**: When caps flatten  
 
-### Layering:
-1. **Sanitize tub**: Wipe with alcohol.  
-2. **Add substrate**: Layer 1-inch substrate, grain spawn, and repeat.  
-3. **Top layer**: Finish with 1-inch substrate casing.  
+        <Callout type="tip" icon="💡">
+            Harvest mushrooms by gently twisting and pulling from the base. Don't leave stumps that could rot.
+        </Callout>
+    </GuideStep>
 
----
+    <FAQ items={[
+        {
+            question: "How long does monotub colonization take?",
+            answer: "Most species colonize in 2-3 weeks at 72-75°F (22-24°C). Slower growth may indicate low temperatures or potential contamination. Maintain consistent conditions for optimal results."
+        },
+        {
+            question: "Can I reuse a monotub?",
+            answer: "Yes! Clean thoroughly with a 10% bleach solution, replace all filters, and ensure complete disinfection between uses. However, if contamination occurred, it's safer to start with a new tub."
+        },
+        {
+            question: "How many holes should a monotub have?",
+            answer: "The optimal setup is six 2-inch holes (8.5 inches from base, 2 per long side, 1 per short side) and three 1-inch holes (4.5 inches from base, per long side) for proper passive FAE."
+        },
+        {
+            question: "What's the best substrate for monotubs?",
+            answer: "For most species, use either a manure-based mix (50% pasteurized horse manure, 50% coconut coir) or a hardwood-based mix (80% oak pellets, 20% wheat bran)."
+        },
+        {
+            question: "How do I prevent side pinning?",
+            answer: "Use a black plastic liner that sticks to the substrate as it shrinks. This prevents a microclimate from forming between the substrate and tub wall."
+        },
+        {
+            question: "When should I introduce fruiting conditions?",
+            answer: "Wait for 100% colonization (substrate fully white), then remove micropore tape from lower holes and begin misting. Rushing this step can lead to contamination."
+        },
+        {
+            question: "What size monotub should I use?",
+            answer: "A 64-quart clear plastic bin is ideal for most growers. It provides enough space for good yields while remaining manageable in size."
+        },
+        {
+            question: "Why isn't my monotub pinning?",
+            answer: "Common causes include low humidity, insufficient FAE (Fresh Air Exchange), or improper temperature. Ensure humidity is 85-90%, holes are properly placed, and temperature is 65-70°F during fruiting."
+        }
+    ]} />
 
-## Step 4: Colonization Phase
-- **Ideal conditions**:  
-  - Temperature: 72-75°F  
-  - Humidity: 90-95%  
-  - Light: Indirect ambient light (12h/day)  
-- **Timeline**: 2-3 weeks.  
+    ## Troubleshooting Common Issues
 
-<ResponsiveImage 
-    src="/monotub-colonization.jpg" 
-    alt="Monotub Colonization Progress" 
-    caption="Mycelium spreading through substrate"
-/>
-
----
-
-## Step 5: Fruiting & Harvesting
-### Triggering Mushroom Growth:
-1. **Introduce FAE**: Remove micropore tape from lower holes.  
-2. **Mist daily**: Maintain 85-90% humidity with distilled water.  
-3. **Harvest**:  
-   - **Psilocybe**: Before the veil breaks.  
-   - **Oyster Mushrooms**: When caps flatten.  
-
----
-
-## Troubleshooting Common Issues
-
-<Table>
-    <TableHead>
-        <TableRow>
-            <TableHeader>Problem</TableHeader>
-            <TableHeader>Cause</TableHeader>
-            <TableHeader>Solution</TableHeader>
-        </TableRow>
-    </TableHead>
-    <TableBody>
-        <TableRow>
-            <TableCell>No pinning</TableCell>
-            <TableCell>Low humidity/FAE</TableCell>
-            <TableCell>Increase misting/FAE</TableCell>
-        </TableRow>
-        <TableRow>
-            <TableCell>Side-pinning</TableCell>
-            <TableCell>Substrate shrinkage</TableCell>
-            <TableCell>Use black plastic liner</TableCell>
-        </TableRow>
-        <TableRow>
-            <TableCell>Contamination</TableCell>
-            <TableCell>Poor sterilization</TableCell>
-            <TableCell>Discard and restart</TableCell>
-        </TableRow>
-    </TableBody>
-</Table>
+    <Table>
+        <TableHead>
+            <TableRow>
+                <TableHeader>Problem</TableHeader>
+                <TableHeader>Cause</TableHeader>
+                <TableHeader>Solution</TableHeader>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow>
+                <TableCell>No pinning</TableCell>
+                <TableCell>Low humidity/FAE</TableCell>
+                <TableCell>Increase misting/FAE</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell>Side-pinning</TableCell>
+                <TableCell>Substrate shrinkage</TableCell>
+                <TableCell>Use black plastic liner</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell>Contamination</TableCell>
+                <TableCell>Poor sterilization</TableCell>
+                <TableCell>Discard and restart</TableCell>
+            </TableRow>
+        </TableBody>
+    </Table>
+</GuideContent>

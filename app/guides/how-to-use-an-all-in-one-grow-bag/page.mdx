@@ -9,24 +9,9 @@ export const metadata = {
     keywords: ['grow bag', 'mushroom cultivation', 'inoculation', 'colonization', 'fruiting', 'harvesting', 'sterilization']
 };
 
-<PostHeader {...metadata} />
-
-<AutoFAQSchema content={`
-<FAQSection>
-    <FAQQuestion>Can I reuse an all-in-one grow bag?</FAQQuestion>
-    <FAQAnswer>No—the substrate loses nutrients after harvest. Always start fresh.</FAQAnswer>
-    
-    <FAQQuestion>How much yield can I expect?</FAQQuestion>
-    <FAQAnswer>1-2 lbs of mushrooms per 5 lb grow bag, depending on the species.</FAQAnswer>
-    
-    <FAQQuestion>Do I need to water my grow bag?</FAQQuestion>
-    <FAQAnswer>Only during the fruiting phase—mist lightly 1-2x daily.</FAQAnswer>
-</FAQSection>
-`} />
-
 <GuideContent metadata={metadata} slug="how-to-use-an-all-in-one-grow-bag">
     <Callout type="info" icon="🍄">
-        All-in-one grow bags simplify mushroom cultivation! This guide answers the top Google searches like *"how to inoculate a grow bag"* and *"how long does colonization take?"* with clear, step-by-step instructions.
+        All-in-one grow bags simplify mushroom cultivation! This guide answers the top questions about inoculation, colonization, and harvesting with clear, step-by-step instructions.
     </Callout>
 
     ## What is an All-in-One Grow Bag?
@@ -107,8 +92,6 @@ export const metadata = {
     </GuideStep>
 
     <GuideStep number={5} title="Fruiting & Harvesting">
-        Answering *"when to open a mushroom grow bag"*:
-        
         1. Wait for **100% colonization**
         2. Cut a 2-inch slit below the filter patch
         3. Mist daily with distilled water
@@ -119,20 +102,40 @@ export const metadata = {
         </Callout>
     </GuideStep>
 
-    ---
-
-    ## Google Featured Snippet Targets
-
-    ### "Why is My Grow Bag Not Colonizing?"
-    | Cause           | Solution                  |
-    |-----------------|---------------------------|
-    | Low temperature | Increase to 75°F (24°C)   |
-    | Contamination   | Discard and restart       |
-    | Dry substrate   | Inject sterile water      |
-
-    ### "How to Store Unused Grow Bags"
-    - Keep sealed in a cool, dark place
-    - Use within **3 months** for best results
+    <FAQ items={[
+        {
+            question: "Can I reuse an all-in-one grow bag?",
+            answer: "No—the substrate loses nutrients after harvest. Always start fresh for best results and to avoid contamination risks."
+        },
+        {
+            question: "How much yield can I expect?",
+            answer: "Typically 1-2 lbs of mushrooms per 5 lb grow bag, depending on the species and growing conditions. Multiple flushes are possible with proper care."
+        },
+        {
+            question: "Do I need to water my grow bag?",
+            answer: "Only during the fruiting phase—mist lightly 1-2x daily with distilled water to maintain proper humidity. Never water during colonization."
+        },
+        {
+            question: "How long does colonization take?",
+            answer: "Most species take 14-28 days to fully colonize at 72-75°F (22-24°C). The time can vary based on temperature and species."
+        },
+        {
+            question: "What temperature is best for grow bags?",
+            answer: "Maintain 72-75°F (22-24°C) during colonization, and slightly cooler 65-70°F (18-21°C) during fruiting for optimal results."
+        },
+        {
+            question: "How do I know if my grow bag is contaminated?",
+            answer: "Look for unusual colors (green, blue, black), sour smells, or slimy textures. Healthy mycelium should be white and smell earthy."
+        },
+        {
+            question: "When should I open my grow bag?",
+            answer: "Wait for 100% colonization (substrate completely white), then cut a 2-inch slit below the filter patch to initiate fruiting."
+        },
+        {
+            question: "What's inside an all-in-one grow bag?",
+            answer: "A pre-sterilized mixture of substrate and grain with a filter patch for gas exchange. The bag includes everything needed for mushroom growth in one convenient package."
+        }
+    ]} />
 
     ---
 
