@@ -1,4 +1,14 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
+
+// Define route segment config
+export const config = {
+	runtime: "edge",
+	regions: "auto",
+	api: {
+		bodyParser: false,
+	},
+};
 
 const SHOPIFY_DOMAIN = "zugz.myshopify.com";
 const STOREFRONT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -35,8 +45,14 @@ interface ShopifyProduct {
 
 const TARGET_PRODUCT_TITLE = "Sterile All-in-One Mushroom Grow Bag – 4 lbs Substrate & Grain with Filter Patch";
 
-export async function GET() {
-	try {
+export const runtime = "edge";
+export const dynamic = "error";
+export const fetchCache = "force-cache";
+export const preferredRegion = "auto";
+export const revalidate = 3600; // 1 hour
+
+const getProductsWithCache = unstable_cache(
+	async () => {
 		const query = `
             {
                 products(first: 20) {
@@ -91,6 +107,19 @@ export async function GET() {
 		if (errors?.length > 0) {
 			throw new Error(errors[0].message);
 		}
+
+		return data;
+	},
+	["products"],
+	{
+		revalidate: 3600,
+		tags: ["products"],
+	}
+);
+
+export async function GET() {
+	try {
+		const data = await getProductsWithCache();
 
 		// Log all products for debugging
 		console.log(

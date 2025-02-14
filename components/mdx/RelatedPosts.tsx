@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import { PostImage } from "./PostImage";
+import { mdxPosts, type Post } from "@/app/api/mdx/data";
 
 const FALLBACK_IMAGE = "/3_how-to-use-all-in-one-grow-bags.jpg";
 
@@ -11,57 +12,75 @@ interface RelatedPostsProps {
 	contentType: "guides" | "learn";
 }
 
-interface Post {
-	slug: string;
-	title: string;
-	description: string;
-	date: string;
-	readTime: string;
-	author?: string;
-	image?: string;
-	keywords?: string[];
-	score?: number;
-}
-
 async function getRelatedPosts(currentSlug: string, currentKeywords: string[], contentType: "guides" | "learn"): Promise<Post[]> {
 	try {
-		// Construct URL with proper origin for server-side
-		const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-		const params = new URLSearchParams({
-			type: contentType,
-			currentSlug,
-			keywords: currentKeywords.join(","),
-		});
+		const allPosts = mdxPosts[contentType];
+		const otherPosts = allPosts.filter((post) => post.slug !== currentSlug);
 
-		const url = `${baseUrl}/api/related-posts?${params.toString()}`;
-		console.log("Fetching related posts from:", url);
-
-		const response = await fetch(url, {
-			next: { tags: ["related-posts"] },
-		});
-
-		if (!response.ok) {
-			console.error("Failed to fetch related posts:", {
-				status: response.status,
-				statusText: response.statusText,
-				url: response.url,
-			});
+		// If no other posts, return empty array
+		if (!otherPosts.length) {
 			return [];
 		}
 
-		const data = await response.json();
+		// Score each post based on various factors
+		const scoredPosts = otherPosts.map((post) => {
+			let score = 0;
 
-		// Ensure we have valid posts with required fields
-		const validPosts = data.filter((post: Post) => post && post.slug && post.title && post.description && post.date && post.readTime);
+			// Add recency score (newer posts score higher)
+			const postDate = new Date(post.date).getTime();
+			const now = Date.now();
+			const daysSincePublish = (now - postDate) / (1000 * 60 * 60 * 24);
 
-		console.log("Related posts data:", {
-			count: validPosts.length,
-			posts: validPosts.map((p: Post) => ({ slug: p.slug, score: p.score })),
+			// Stronger recency bias - more recent posts get higher base scores
+			score += Math.max(0.5, 2 - daysSincePublish / 180); // Base score from recency (0.5 to 2)
+
+			// If we have keywords, add relevance scoring
+			if (currentKeywords?.length && post.keywords?.length) {
+				currentKeywords.forEach((keyword) => {
+					const normalizedKeyword = keyword.toLowerCase().trim();
+					post.keywords?.forEach((postKeyword) => {
+						const normalizedPostKeyword = postKeyword.toLowerCase().trim();
+						// Exact match
+						if (normalizedPostKeyword === normalizedKeyword) {
+							score += 2;
+						}
+						// Partial match
+						else if (normalizedPostKeyword.includes(normalizedKeyword) || normalizedKeyword.includes(normalizedPostKeyword)) {
+							score += 1;
+						}
+					});
+				});
+
+				// Check title and description for keyword matches
+				const normalizedTitle = post.title.toLowerCase();
+				const normalizedDesc = post.description.toLowerCase();
+				currentKeywords.forEach((keyword) => {
+					const normalizedKeyword = keyword.toLowerCase().trim();
+					if (normalizedTitle.includes(normalizedKeyword)) {
+						score += 1;
+					}
+					if (normalizedDesc.includes(normalizedKeyword)) {
+						score += 0.5;
+					}
+				});
+			}
+
+			// Add a small base score for being in the same content type
+			score += 0.1;
+
+			return {
+				...post,
+				score,
+			};
 		});
 
-		return validPosts;
+		// Sort by score (which includes recency) and get top 3
+		const sortedPosts = scoredPosts.sort((a, b) => (b.score || 0) - (a.score || 0));
+
+		// Always return up to 3 posts
+		return sortedPosts.slice(0, 3);
 	} catch (error) {
-		console.error("Error fetching related posts:", error);
+		console.error("Error getting related posts:", error);
 		return [];
 	}
 }
@@ -82,7 +101,7 @@ export default async function RelatedPosts({ currentSlug, currentKeywords, conte
 		<section className="mt-16 border-t border-purple/20 pt-12">
 			<h2 className="text-3xl font-bold text-white mb-8">Continue Reading</h2>
 			<div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-				{relatedPosts.map((post: Post) => (
+				{relatedPosts.map((post) => (
 					<Link key={post.slug} href={`/${contentType}/${post.slug}`} className="block no-underline group">
 						<article className="bg-secondary/50 backdrop-blur-sm border border-purple/20 rounded-lg overflow-hidden hover:border-purple/40 transition-colors h-full">
 							<div className="relative aspect-[16/9]">

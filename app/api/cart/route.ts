@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { unstable_cache } from "next/cache";
 
 const SHOPIFY_DOMAIN = "zugz.myshopify.com";
@@ -263,7 +263,26 @@ async function createCart(items: CartItem[]) {
 	}
 }
 
-export async function POST(request: Request) {
+// Define route segment config
+export const config = {
+	runtime: "edge",
+	regions: "auto",
+	api: {
+		bodyParser: false,
+	},
+};
+
+export const runtime = "edge";
+export const dynamic = "error";
+export const fetchCache = "force-cache";
+export const preferredRegion = "auto";
+export const revalidate = 3600; // 1 hour
+
+export async function GET(request: NextRequest) {
+	// ... existing code ...
+}
+
+export async function POST(request: NextRequest) {
 	try {
 		const { action, items } = await request.json();
 		console.log("Received cart request:", { action, items });

@@ -1,23 +1,20 @@
-import { NextResponse } from "next/server";
-import { getMDXPosts } from "@/lib/mdx";
+import { NextRequest, NextResponse } from "next/server";
 import { unstable_cache } from "next/cache";
+import { mdxPosts, type Post } from "../mdx/data";
 
-interface Post {
-	slug: string;
-	title: string;
-	description: string;
-	date: string;
-	readTime: string;
-	author?: string;
-	image?: string;
-	keywords?: string[];
-	score?: number;
-}
+// Define route segment config
+export const config = {
+	runtime: "edge",
+	regions: "auto",
+	api: {
+		bodyParser: false,
+	},
+};
 
 const getRelatedPostsWithCache = unstable_cache(
 	async (contentType: string, currentSlug: string, keywords: string[]) => {
 		try {
-			const allPosts = (await getMDXPosts(contentType as "guides" | "learn")) as Post[];
+			const allPosts = mdxPosts[contentType as keyof typeof mdxPosts];
 			const otherPosts = allPosts.filter((post) => post.slug !== currentSlug);
 
 			// If no other posts, return empty array
@@ -94,7 +91,13 @@ const getRelatedPostsWithCache = unstable_cache(
 	}
 );
 
-export async function GET(request: Request) {
+export const runtime = "edge";
+export const dynamic = "error";
+export const fetchCache = "force-cache";
+export const preferredRegion = "auto";
+export const revalidate = 3600; // 1 hour
+
+export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url);
 		const contentType = searchParams.get("type") as "guides" | "learn";
